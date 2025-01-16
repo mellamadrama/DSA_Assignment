@@ -133,12 +133,14 @@
     <ClCompile Include="DSA_Assignment.cpp" />
     <ClCompile Include="HashTable.cpp" />
     <ClCompile Include="HashTable.h" />
+    <ClCompile Include="LinkedList.cpp" />
     <ClCompile Include="Movie.cpp" />
     <ClCompile Include="Report.cpp" />
     <ClCompile Include="User.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Actor.h" />
+    <ClInclude Include="LinkedList.h" />
     <ClInclude Include="Movie.h" />
     <ClInclude Include="Report.h" />
     <ClInclude Include="User.h" />
