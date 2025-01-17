@@ -48,9 +48,9 @@ void HashTable<ValueType>::insert(KeyType key, const ValueType& value) {
     size++;
 }
 
-// Find a value by key
+// Search a value by key
 template <typename ValueType>
-ValueType* HashTable<ValueType>::find(KeyType key) {
+ValueType* HashTable<ValueType>::search(KeyType key) {
     int index = hashFunction(key);
     Node* current = table[index];
 
