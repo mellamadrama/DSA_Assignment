@@ -13,6 +13,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Csv Files">
+      <UniqueIdentifier>{d96fa6d3-4fdc-4500-bd1a-961a7a433f72}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DSA_Assignment.cpp">
@@ -62,5 +65,16 @@
     <ClInclude Include="LinkedList.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\actors.csv">
+      <Filter>Csv Files</Filter>
+    </None>
+    <None Include="..\cast.csv">
+      <Filter>Csv Files</Filter>
+    </None>
+    <None Include="..\movies.csv">
+      <Filter>Csv Files</Filter>
+    </None>
   </ItemGroup>
 </Project>
