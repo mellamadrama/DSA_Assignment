@@ -1,8 +1,7 @@
 #pragma once
-
-
 #include <string>
 #include <vector>
+#include "Movie.h"
 using namespace std;
 
 class Movie;
@@ -19,7 +18,7 @@ public:
     Actor(string name, int yearOfBirth, float rating);
 
     // Destructor
-    ~Actor() = default;
+    ~Actor();
 
     // Get the name of the actor
     // pre : none
@@ -39,7 +38,7 @@ public:
     // Add a movie to the actor's list of movies
     // pre : movie is a valid Movie object
     // post: movie is added to the actor's list of movies
-    void addMovie(Movie* movie) { listOfMovies.push_back(movie); }
+    void addMovie(Movie* movie);
 
     // Display all movies the actor has acted in
     // pre : none
@@ -49,5 +48,5 @@ public:
 	// Get the age of the actor
 	// pre : none
 	// post: returns the age of the actor
-    int getAge() const;
+    int getAge() const;  
 };
