@@ -1,5 +1,4 @@
 #pragma once
-
 #include <string>
 #include <iostream>
 using namespace std;
@@ -16,7 +15,7 @@ public:
     Report(string createdBy, string errorDescription, string type, int reportId);
 
 	// Destructor
-    ~Report() = default;
+    ~Report();
 
 	// Get the name of the user who created the report
 	// pre : none
@@ -42,6 +41,4 @@ public:
 	// pre : none
 	// post: prints the details of the report
     void displayReport() const;
-
-    
 };

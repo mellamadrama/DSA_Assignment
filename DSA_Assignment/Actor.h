@@ -10,7 +10,7 @@ class Actor {
 private:
     string name;
     int yearOfBirth;
-    float rating;
+    float actorRating;
     vector<Movie*> listOfMovies;
 
 public:
@@ -33,7 +33,7 @@ public:
 	// Get the rating of the actor
 	// pre : none
 	// post: returns the rating of the actor
-    float getRating() const;
+    float getActorRating() const;
 
     // Add a movie to the actor's list of movies
     // pre : movie is a valid Movie object
@@ -48,5 +48,15 @@ public:
 	// Get the age of the actor
 	// pre : none
 	// post: returns the age of the actor
-    int getAge() const;  
+    int getAge() const; 
+
+    // Update the actor's details
+    // pre: newName is a valid string, newYearOfBirth is a positive integer
+    // post: updates the name and year of birth of the actor
+    void updateActorDetails(const string& newName, int newYearOfBirth, float newActorRating);
+
+    // Get the list of movies the actor has acted in
+    // pre : actor must have acted in movies
+    // post: returns a constant reference to the list of movies
+    const vector<Movie*>& getMovies() const;
 };

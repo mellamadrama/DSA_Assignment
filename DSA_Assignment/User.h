@@ -1,5 +1,4 @@
 #pragma once
-
 #include <string>
 #include "Actor.h"
 #include "Movie.h"
@@ -41,7 +40,7 @@ public:
 	// Display all actors in the range of rating
 	// pre : none
 	// post: prints the names of all actors in the range of rating
-    void displayMovieWithActor(const vector<Movie*>& movies, const string& actorName) const;
+    void displayMovieWithActor(const Actor& actor) const;
 
 	// Display all actors in the range of rating
 	// pre : none
@@ -52,6 +51,4 @@ public:
 	// pre : none
 	// post: prints the names of all actors in the range of rating
     void displayActorConnections(const Actor* actor) const;
-
-    
 };
