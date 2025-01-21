@@ -17,22 +17,22 @@ private:
 	int  size;			// number of items in the list
 
 public:
-	List();			// constructor
+	LinkedList();			// constructor
 
-    ~List();		// destructor
+    ~LinkedList();		// destructor
 
 	// add an item to the back of the list (append)
 	// pre : size < MAX_SIZE
 	// post: item is added to the back of the list
 	// size of list is increased by 1
-	bool add(ItemType item);
+	bool add(T item);
 
 	// add an item at a specified position in the list (insert)
 	// pre : 0 <= index <= size
 	// post: item is added to the specified position in the list
 	//       items after the position are shifted back by 1 position
 	//       size of list is increased by 1
-	bool add(int index, ItemType item);
+	bool add(int index, T item);
 
 	// remove an item at a specified position in the list
 	// pre : 0 <= index < size
@@ -45,7 +45,7 @@ public:
 	// pre : 0 <= index < size
 	// post: none
 	// return the item in the specified index of the list
-	ItemType get(int index);
+	T get(int index);
 
 	// check if the list is empty
 	// pre : none
