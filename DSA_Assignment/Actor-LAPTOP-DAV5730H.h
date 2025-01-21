@@ -1,7 +1,8 @@
 #pragma once
+
+
 #include <string>
-#include "LinkedList.h"
-#include "Movie.h"
+#include <vector>
 using namespace std;
 
 class Movie;
@@ -10,53 +11,43 @@ class Actor {
 private:
     string name;
     int yearOfBirth;
-    float actorRating;
-    LinkedList<Movie*> listOfMovies;
+    float rating;
+    vector<Movie*> listOfMovies;
 
 public:
     // Constructor
-    Actor(string name, int yearOfBirth, float actorRating);
+    Actor(string name, int yearOfBirth, float rating);
 
     // Destructor
-    ~Actor();
+    ~Actor() = default;
 
     // Get the name of the actor
     // pre : none
     // post: returns the name of the actor
-    string getName();
+    string getName() const;
 
     // Get the year of birth of the actor
     // pre : none
     // post: returns the year of birth of the actor
-    int getYearOfBirth();
+    int getYearOfBirth() const;
 
 	// Get the rating of the actor
 	// pre : none
 	// post: returns the rating of the actor
-    float getActorRating();
+    float getRating() const;
 
     // Add a movie to the actor's list of movies
     // pre : movie is a valid Movie object
     // post: movie is added to the actor's list of movies
-    void addMovie(Movie* movie);
+    void addMovie(Movie* movie) { listOfMovies.push_back(movie); }
 
     // Display all movies the actor has acted in
     // pre : none
     // post: prints the titles of all movies the actor has acted in
-    void displayMovies();
+    void displayMovies() const;
 
 	// Get the age of the actor
 	// pre : none
 	// post: returns the age of the actor
-    int getAge(); 
-
-    // Update the actor's details
-    // pre: newName is a valid string, newYearOfBirth is a positive integer
-    // post: updates the name and year of birth of the actor
-    void updateActorDetails(const string& newName, int newYearOfBirth, float newActorRating);
-
-    // Get the list of movies the actor has acted in
-    // pre : actor must have acted in movies
-    // post: returns a constant reference to the list of movies
-    const LinkedList<Movie*>& getMovies();
+    int getAge() const;
 };

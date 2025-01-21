@@ -12,35 +12,35 @@ Actor::Actor(string name, int yearOfBirth, float actorRating) {
 Actor::~Actor() {
 }
 
-string Actor::getName() const {
+string Actor::getName() {
 	return name;
 }
 
-int Actor::getYearOfBirth() const {
+int Actor::getYearOfBirth() {
 	return yearOfBirth;
 }
 
-float Actor::getActorRating() const {
+float Actor::getActorRating() {
 	return actorRating;
 }
 
 void Actor::addMovie(Movie* movie) {
-	listOfMovies.push_back(movie);
+	listOfMovies.add(movie);
 	movie->addActor(this);
 }
 
-void Actor::displayMovies() const {
+void Actor::displayMovies() {
 	cout << "Movies acted in by " << name << ":" << endl;
-	if (listOfMovies.empty()) {
+	if (listOfMovies.isEmpty()) {
 		cout << "No movies for this actor." << endl;
 		return;
 	}
-	for (Movie* movie : listOfMovies) {
-		cout << movie->getTitle() << endl;
+	for (int i = 0; i < listOfMovies.getLength(); ++i) {
+		cout << listOfMovies.get(i)->getTitle() << endl;
 	}
 }
 
-int Actor::getAge() const {
+int Actor::getAge() {
 	time_t timeUnix = time(0);
 	tm* now = localtime(&timeUnix);
 	int currentYear = now->tm_year + 1900;
@@ -69,6 +69,6 @@ void Actor::updateActorDetails(const string& newName, int newYearOfBirth, float 
 // Get the list of movies the actor has acted in
 // pre : The Actor object must be properly initialized.
 // post: Returns a constant reference to the vector containing pointers to the movies the actor is associated with.
-const vector<Movie*>& Actor::getMovies() const {
-	return listOfMovies;
+const LinkedList<Movie*>& Actor::getMovies() {
+    return listOfMovies;
 }

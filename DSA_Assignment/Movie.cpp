@@ -17,28 +17,28 @@ Movie::~Movie() {
 // Get the title of the movie
 // pre: none
 // post: returns the title of the movie
-string Movie::getTitle() const {
+string Movie::getTitle() {
     return title;
 }
 
 // Get the plot of the movie
 // pre: none
 // post: returns the plot of the movie
-string Movie::getPlot() const {
+string Movie::getPlot() {
     return plot;
 }
 
 // Get the year of release of the movie
 // pre: none
 // post: returns the year of release of the movie
-int Movie::getYearOfRelease() const {
+int Movie::getYearOfRelease() {
     return yearOfRelease;
 }
 
 // Get the rating of the movie
 // pre: none
 // post: returns the rating of the movie
-float Movie::getMovieRating() const {
+float Movie::getMovieRating() {
     return movieRating;
 }
 
@@ -46,21 +46,21 @@ float Movie::getMovieRating() const {
 // pre: actor is a valid pointer to an Actor object
 // post: adds the actor to the movie's list of actors and adds this movie to the actor's list of movies
 void Movie::addActor(Actor* actor) {
-    listOfActors.push_back(actor);
+    listOfActors.add(actor);
     actor->addMovie(this);
 }
 
 // Display all actors in the movie
 // pre: none
 // post: prints the names of all actors in the movie or a message if no actors are present
-void Movie::displayActors() const {
+void Movie::displayActors() {
     cout << "Actors in the movie " << title << ":" << endl;
-    if (listOfActors.empty()) {
+    if (listOfActors.isEmpty()) {
         cout << "No actors in this movie." << endl;
         return;
     }
-    for (Actor* actor : listOfActors) {
-        cout << "- " << actor->getName() << endl;
+    for (int i = 0; i < listOfActors.getLength(); ++i) {
+        cout << "- " << listOfActors.get(i)->getName() << endl;
     }
 }
 
@@ -85,6 +85,6 @@ void Movie::updateMovieDetails(const string& newTitle, const string& newPlot, in
 }
 
 // Get the list of actors in the movie
-const vector<Actor*>& Movie::getActors() const {
+const LinkedList<Actor*>& Movie::getActors() {
     return listOfActors;
 }
