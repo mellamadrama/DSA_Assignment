@@ -20,7 +20,7 @@ public:
     Movie(string title, string plot, int yearOfRelease, float movieRating);
 
 	//Destructor
-    ~Movie() = default;
+	~Movie();
 
 	// Get the title of the movie
 	// pre : none
@@ -55,10 +55,10 @@ public:
 	// Update the movie's details
 	// pre: newTitle and newPlot are valid strings, newYearOfRelease is a positive integer
 	// post: updates the title, plot, and year of release of the movie
-	void updateMovieDetails(const string& newTitle, const string& newPlot, int newYearOfRelease, float newMovieRating);
+	void updateMovieDetails(string& newTitle, string& newPlot, int newYearOfRelease, float newMovieRating);
 
 	// Get the list of actors in the movie
 	// pre : none
 	// post: returns a constant reference to the list of actors
-	const LinkedList<Actor*>& getActors();
+	LinkedList<Actor*>& getActors();
 };

@@ -42,8 +42,9 @@ void Actor::displayMovies() {
 
 int Actor::getAge() {
 	time_t timeUnix = time(0);
-	tm* now = localtime(&timeUnix);
-	int currentYear = now->tm_year + 1900;
+	tm now;
+	localtime_s(&now, &timeUnix);
+	int currentYear = now.tm_year + 1900;
 
 	return currentYear - yearOfBirth;
 }
@@ -51,7 +52,7 @@ int Actor::getAge() {
 // Update the actor's details
 // pre: newName is a valid string, newYearOfBirth is a positive integer
 // post: updates the name and year of birth of the actor
-void Actor::updateActorDetails(const string& newName, int newYearOfBirth, float newActorRating) {
+void Actor::updateActorDetails(string& newName, int newYearOfBirth, float newActorRating) {
 	if (newName.empty() || newYearOfBirth <= 0 || newActorRating < 0.0 || newActorRating > 5.0) {
 		cout << "Invalid details provided. Update failed." << endl;
 		return;
@@ -69,6 +70,6 @@ void Actor::updateActorDetails(const string& newName, int newYearOfBirth, float 
 // Get the list of movies the actor has acted in
 // pre : The Actor object must be properly initialized.
 // post: Returns a constant reference to the vector containing pointers to the movies the actor is associated with.
-const LinkedList<Movie*>& Actor::getMovies() {
+LinkedList<Movie*>& Actor::getMovies() {
     return listOfMovies;
 }

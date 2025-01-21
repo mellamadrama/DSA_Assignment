@@ -67,7 +67,7 @@ void Movie::displayActors() {
 // Update the movie's details
 // pre: newTitle and newPlot are valid strings, newYearOfRelease is a positive integer
 // post: updates the title, plot, and year of release of the movie
-void Movie::updateMovieDetails(const string& newTitle, const string& newPlot, int newYearOfRelease, float newMovieRating) {
+void Movie::updateMovieDetails(string& newTitle, string& newPlot, int newYearOfRelease, float newMovieRating) {
     // Validate inputs
     if (newTitle.empty() || newPlot.empty() || newYearOfRelease <= 0 || newMovieRating < 0.0 || newMovieRating > 5.0) {
         cout << "Invalid details provided. Update failed." << endl;
@@ -85,6 +85,6 @@ void Movie::updateMovieDetails(const string& newTitle, const string& newPlot, in
 }
 
 // Get the list of actors in the movie
-const LinkedList<Actor*>& Movie::getActors() {
+LinkedList<Actor*>& Movie::getActors() {
     return listOfActors;
 }

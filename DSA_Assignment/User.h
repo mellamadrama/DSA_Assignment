@@ -3,6 +3,7 @@
 #include "Actor.h"
 #include "Movie.h"
 #include "HashTable.h"
+#include "LinkedList.h"
 using namespace std;
 
 class User {
@@ -20,35 +21,35 @@ public:
 	// Get the name of the user
 	// pre : none
 	// post: returns the name of the user
-    string getName() const { return name; }
+    string getName() { return name; }
 
 	// Get the user ID
 	// pre : none
 	// post: returns the user ID
-    int getUserId() const { return userId; }
+    int getUserId() { return userId; }
 
 	// Display all actors in the range of age
 	// pre : none
 	// post: prints the names of all actors in the range of age
-    void displayActorInRange(const vector<Actor*>& actors, int minAge, int maxAge) const;
+    void displayActorInRange(LinkedList<Actor*>& actors, int minAge, int maxAge);
 
 	// Display all actors in the range of rating
 	// pre : none
 	// post: prints the names of all actors in the range of rating
-    void displayMoviesInRange(const vector<Movie*>& movies) const;
+    void displayMoviesInRange(LinkedList<Movie*>& movies);
 
 	// Display all actors in the range of rating
 	// pre : none
 	// post: prints the names of all actors in the range of rating
-    void displayMovieWithActor(const Actor& actor) const;
+    void displayMovieWithActor(Actor& actor);
 
 	// Display all actors in the range of rating
 	// pre : none
 	// post: prints the names of all actors in the range of rating
-    void displayAllActorsInMovie(const Movie* mvoie) const;
+    void displayAllActorsInMovie(Movie* mvoie);
 
 	// Display all actors in the range of rating
 	// pre : none
 	// post: prints the names of all actors in the range of rating
-    void displayActorConnections(const Actor* actor) const;
+    void displayActorConnections(Actor* actor);
 };

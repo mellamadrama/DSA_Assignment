@@ -45,9 +45,6 @@
     <ClCompile Include="Report.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="LinkedList.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Actor.h">
@@ -67,13 +64,13 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\actors.csv">
+    <None Include="actors.csv">
       <Filter>Csv Files</Filter>
     </None>
-    <None Include="..\cast.csv">
+    <None Include="cast.csv">
       <Filter>Csv Files</Filter>
     </None>
-    <None Include="..\movies.csv">
+    <None Include="movies.csv">
       <Filter>Csv Files</Filter>
     </None>
   </ItemGroup>

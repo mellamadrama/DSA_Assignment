@@ -12,22 +12,23 @@ Admin::Admin(string name, int adminId) {
 // Get the name of the admin
 // pre: none
 // post: returns the name of the admin
-string Admin::getName() const {
+string Admin::getName() {
     return name;
 }
 
 // Get the admin ID
 // pre: none
 // post: returns the admin ID
-int Admin::getAdminId() const {
+int Admin::getAdminId() {
     return adminId;
 }
 
 // Add a new actor to the list
 // pre: actorName is a valid string, yearOfBirth is a positive integer
 // post: new actor is added to the vector; if actor already exists, no changes are made
-void Admin::addActor(vector<Actor*>& actors, const string& actorName, int yearOfBirth, float rating) {
-    for (Actor* actor : actors) {
+void Admin::addActor(LinkedList<Actor*>& actors, string& actorName, int yearOfBirth, float rating) {
+    for (int i = 0; i < actors.getLength(); ++i) {
+        Actor* actor = actors.get(i);
         if (actor->getName() == actorName) {
             cout << "Actor " << actorName << " already exists in the system." << endl;
             return;
@@ -35,15 +36,16 @@ void Admin::addActor(vector<Actor*>& actors, const string& actorName, int yearOf
     }
 
     Actor* newActor = new Actor(actorName, yearOfBirth, 0.0f); // Default rating is 0.0
-    actors.push_back(newActor);
+    actors.add(newActor);
     cout << "Actor " << actorName << " added successfully." << endl;
 }
 
 // Add a new movie to the list
 // pre: title and plot are valid strings, yearOfRelease is a positive integer
 // post: new movie is added to the vector; if movie already exists, no changes are made
-void Admin::addMovie(vector<Movie*>& movies, const string& title, const string& plot, int yearOfRelease, float rating) {
-    for (Movie* movie : movies) {
+void Admin::addMovie(LinkedList<Movie*>& movies, string& title, string& plot, int yearOfRelease, float rating) {
+    for (int i = 0; i < movies.getLength(); ++i) {
+        Movie* movie = movies.get(i);
         if (movie->getTitle() == title) {
             cout << "Movie " << title << " already exists in the system." << endl;
             return;
@@ -51,7 +53,7 @@ void Admin::addMovie(vector<Movie*>& movies, const string& title, const string& 
     }
 
     Movie* newMovie = new Movie(title, plot, yearOfRelease, 0.0f); // Default rating is 0.0
-    movies.push_back(newMovie);
+    movies.add(newMovie);
     cout << "Movie " << title << " added successfully." << endl;
 }
 
@@ -71,7 +73,7 @@ void Admin::addActorToMovie(Movie* movie, Actor* actor) {
 // Update an actor's details
 // pre: actor is a valid pointer, yearOfBirth is a positive integer
 // post: actor's details are updated
-void Admin::updateActor(Actor* actor, const string& newName, int newYearOfBirth, float newActorRating) {
+void Admin::updateActor(Actor* actor, string& newName, int newYearOfBirth, float newActorRating) {
     if (!actor) {
         cout << "Actor not found." << endl;
         return;
@@ -84,7 +86,7 @@ void Admin::updateActor(Actor* actor, const string& newName, int newYearOfBirth,
 // Update a movie's details
 // pre: movie is a valid pointer, yearOfRelease is a positive integer
 // post: movie's details are updated
-void Admin::updateMovie(Movie* movie, const string& newTitle, const string& newPlot, int newYearOfRelease, float newMovieRating) {
+void Admin::updateMovie(Movie* movie, string& newTitle, string& newPlot, int newYearOfRelease, float newMovieRating) {
     if (!movie) {
         cout << "Movie not found." << endl;
         return;
@@ -97,7 +99,7 @@ void Admin::updateMovie(Movie* movie, const string& newTitle, const string& newP
 // Handle a report
 // pre: report is a valid Report object
 // post: prints the report details and handles accordingly
-void Admin::handleReport(const Report& report) {
+void Admin::handleReport(Report& report) {
     cout << "Handling Report ID: " << report.getReportId() << endl;
     cout << "Created By: " << report.getCreatedBy() << endl;
     cout << "Type: " << report.getType() << endl;

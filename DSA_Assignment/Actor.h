@@ -53,10 +53,10 @@ public:
     // Update the actor's details
     // pre: newName is a valid string, newYearOfBirth is a positive integer
     // post: updates the name and year of birth of the actor
-    void updateActorDetails(const string& newName, int newYearOfBirth, float newActorRating);
+    void updateActorDetails(string& newName, int newYearOfBirth, float newActorRating);
 
     // Get the list of movies the actor has acted in
     // pre : actor must have acted in movies
     // post: returns a constant reference to the list of movies
-    const LinkedList<Movie*>& getMovies();
+    LinkedList<Movie*>& getMovies();
 };
