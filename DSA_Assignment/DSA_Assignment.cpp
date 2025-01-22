@@ -64,6 +64,22 @@ void loadCSVData(LinkedList<Actor*>& actors, LinkedList<Movie*>& movies) {
     }
 }
 
+// Predefined user and admin lists
+LinkedList<User> createUserList() {
+    LinkedList<User> userList;
+    userList.add(User("Alice Tan", 001));
+    userList.add(User("Bob Lim", 002));
+    userList.add(User("Charlie Lee", 003));
+    return userList;
+}
+
+LinkedList<Admin> createAdminList() {
+    LinkedList<Admin> adminList;
+    adminList.add(Admin("Jane Doe", 100));
+    adminList.add(Admin("John Doe", 101));
+    return adminList;
+}
+
 int main()
 {
     LinkedList<Actor*> actors;
@@ -71,4 +87,7 @@ int main()
 
     loadCSVData(actors, movies);
 
+    // Initialize linked lists
+    LinkedList<User> userList = createUserList();
+    LinkedList<Admin> adminList = createAdminList();
 }
