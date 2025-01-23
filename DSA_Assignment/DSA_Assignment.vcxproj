@@ -143,6 +143,7 @@
   <ItemGroup>
     <ClInclude Include="Actor.h" />
     <ClInclude Include="LinkedList.h" />
+    <ClInclude Include="LinkedList.hpp" />
     <ClInclude Include="Movie.h" />
     <ClInclude Include="Report.h" />
     <ClInclude Include="User.h" />
