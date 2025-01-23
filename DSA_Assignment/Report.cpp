@@ -3,11 +3,12 @@
 using namespace std;
 
 // Constructor
-Report::Report(string createdBy, string errorDescription, string type, int reportId) {
+Report::Report(string createdBy, string errorDescription, string type, int reportId, bool resolved) {
     this->createdBy = createdBy;
     this->errorDescription = errorDescription;
     this->type = type;
     this->reportId = reportId;
+	this->resolved = resolved;
 }
 
 // Destructor
@@ -50,4 +51,5 @@ void Report::displayReport() const {
     cout << "Created By: " << createdBy << endl;
     cout << "Type: " << type << endl;
     cout << "Error Description: " << errorDescription << endl;
+	cout << "Resolved: " << (resolved ? "Yes" : "No") << endl;
 }

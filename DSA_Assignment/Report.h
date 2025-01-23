@@ -9,10 +9,11 @@ private:
     string errorDescription;
     string type;
     int reportId;
+	bool resolved;
 
 public:
 	// Constructor
-    Report(string createdBy, string errorDescription, string type, int reportId);
+    Report(string createdBy, string errorDescription, string type, int reportId, bool resolved);
 
 	// Destructor
     ~Report();
