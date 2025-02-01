@@ -3,24 +3,27 @@
 #include <string>
 #include "LinkedList.h"
 #include "Actor.h"
+#include "Report.h"
 using namespace std;
 
 class Actor;
 
 class Movie {
 private:
+    int id;
     string title;                   
     string plot;                    
     int yearOfRelease;
     float avgMovieRating;
     LinkedList<float> listOfRatings;      
     LinkedList<Actor*> listOfActors;
+	LinkedList<Report*> listOfReports;
     
 public:
     // Constructor
     // pre: title and plot are valid strings, yearOfRelease is a positive integer, avgMovieRating is within a valid range
     // post: Movie object is initialized with the given attributes
-    Movie (string& title, string& plot, int yearOfRelease, float avgMovieRating);
+    Movie (int id, string& title, string& plot, int yearOfRelease, float avgMovieRating);
 
     // Destructor
     // pre : none
@@ -32,10 +35,23 @@ public:
     // post: returns the title of the movie
     string getTitle();
 
+	// Get the id of the movie
+	// pre : none
+	// post: returns the id of the movie
+	int getId();
+
     // Get the plot of the movie
     // pre : none
     // post: returns the plot of the movie
     string getPlot();
+
+	bool listReports();
+
+	void displayReport(Report* report);
+
+	void addReport(Report* report);
+
+	LinkedList<Report*>& getReportList();
 
     // Get the year of release of the movie
     // pre : none

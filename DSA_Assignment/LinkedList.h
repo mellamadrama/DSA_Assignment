@@ -1,5 +1,6 @@
 #pragma once
 #include <iostream>
+#include "HashTable.h"
 using namespace std;
 
 template <typename T>
@@ -15,11 +16,20 @@ private:
 	Node* firstNode;	// point to the first item
 	Node* backNode;     // point to the last item
 	int  size;			// number of items in the list
+	HashTable<T>* hashTable; //initialize hash table
+
+	//Helper functions
+	Node* mergeSort(Node* head, bool (*compare)(T, T));
+	Node* merge(Node* left, Node* right, bool (*compare)(T, T));
+	Node* split(Node* head);
 
 public:
 	LinkedList();			// constructor
 
     ~LinkedList();		// destructor
+
+	// sort the linked list
+	void sort(bool (*compare)(T, T));
 
 	// add an item to the back of the list (append)
 	// pre : size < MAX_SIZE
@@ -33,6 +43,8 @@ public:
 	//       items after the position are shifted back by 1 position
 	//       size of list is increased by 1
 	bool add(int index, T item);
+
+	bool contains(T item);
 
 	// remove an item at a specified position in the list
 	// pre : 0 <= index < size
@@ -63,7 +75,189 @@ public:
 	void print();
 
 	// void replace(int index, ItemType item);
-	// int search(ItemType item);
 };
 
-#include "LinkedList.hpp"
+template <typename T>
+LinkedList<T>::LinkedList() {
+	firstNode = NULL;
+	backNode = NULL;
+	size = 0;
+	hashTable = new HashTable<T>(100);
+}
+
+template <typename T>
+LinkedList<T>::~LinkedList() {
+	while (!isEmpty()) {
+		remove(0);
+	}
+	delete hashTable;
+}
+
+// Merge two sorted linked lists
+template <typename T>
+typename LinkedList<T>::Node* LinkedList<T>::merge(Node* left, Node* right, bool (*compare)(T, T)) {
+	if (!left) return right;
+	if (!right) return left;
+
+	Node* result = nullptr;
+	if (compare(left->item, right->item)) {
+		result = left;
+		result->next = merge(left->next, right, compare);
+	}
+	else {
+		result = right;
+		result->next = merge(left, right->next, compare);
+	}
+	return result;
+}
+
+// Find the middle node of the linked list
+template <typename T>
+typename LinkedList<T>::Node* LinkedList<T>::split(Node* head) {
+	if (!head) return head;
+
+	Node* slow = head;
+	Node* fast = head->next;
+
+	while (fast && fast->next) {
+		slow = slow->next;
+		fast = fast->next->next;
+	}
+	return slow;
+}
+
+// Merge sort implementation
+template <typename T>
+typename LinkedList<T>::Node* LinkedList<T>::mergeSort(Node* head, bool (*compare)(T, T)) {
+	if (!head || !head->next) return head;
+
+	Node* middle = split(head);
+	Node* nextToMiddle = middle->next;
+	middle->next = nullptr;
+
+	Node* left = mergeSort(head, compare);
+	Node* right = mergeSort(nextToMiddle, compare);
+
+	return merge(left, right, compare);
+}
+
+// Merge sort function
+template <typename T>
+void LinkedList<T>::sort(bool (*compare)(T, T)) {
+	firstNode = mergeSort(firstNode, compare);
+}
+
+template <typename T>
+bool LinkedList<T>::add(T item) {
+	Node* node = new Node;
+	node->item = item;
+	node->next = NULL;
+
+	if (size == 0)
+	{
+		firstNode = node;
+	}
+	else {
+		Node* current = firstNode;
+		while (current->next != NULL)
+		{
+			current = current->next;
+		}
+		current->next = node;
+	}
+	size++;
+	hashTable->insert(size, item);
+	return true;
+}
+
+template <typename T>
+bool LinkedList<T>::add(int index, T item) {
+	if (index < 0 || index > size) {
+		return false;
+	}
+	Node* newNode = new Node;
+	newNode->item = item;
+	newNode->next = NULL;
+
+	if (index == 0) {
+		newNode->next = firstNode;
+		firstNode = newNode;
+	}
+	else {
+		Node* current = firstNode;
+		for (int i = 0; i < index - 1; i++) {
+			current = current->next;
+		}
+		newNode->next = current->next;
+		current->next = newNode;
+		size++;
+		hashTable->insert(size, item);
+		return true;
+	}
+	return false;
+}
+
+template <typename T>
+bool LinkedList<T>::contains(T item) {
+	return hashTable->search(item);
+}
+
+template <typename T>
+void LinkedList<T>::remove(int index) {
+	if (index < 0 || index >= size) {
+		return;
+	}
+
+	Node* toDelete = NULL;
+
+	if (index == 0) {
+		toDelete = firstNode;
+		firstNode = firstNode->next;
+	}
+	else {
+		Node* current = firstNode;
+		for (int i = 0; i < index - 1; i++) {
+			current = current->next;
+		}
+		toDelete = current->next;
+		current->next = toDelete->next;
+	}
+
+	delete toDelete;
+	size--;
+}
+
+template <typename T>
+T LinkedList<T>::get(int index) {
+	if (index < 0 || index >= size) {
+		return T();
+	}
+	Node* current = firstNode;
+	for (int i = 0; i < index; i++) {
+		current = current->next;
+	}
+	return current->item;
+}
+
+template <typename T>
+bool LinkedList<T>::isEmpty() {
+	if (size == 0) {
+		return true;
+	}
+	return false;
+}
+
+template <typename T>
+int LinkedList<T>::getLength() {
+	return size;
+}
+
+template <typename T>
+void LinkedList<T>::print() {
+	Node* current = firstNode;
+	while (current != NULL) {
+		cout << current->item << " ";
+		current = current->next;
+	}
+	cout << endl;
+}

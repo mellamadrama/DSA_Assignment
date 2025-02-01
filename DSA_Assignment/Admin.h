@@ -27,29 +27,37 @@ public:
     int getAdminId();
 
     // add a new actor to the hash table
-    // pre : key is unique, name is a valid string, yearOfBirth is a positive integer, and rating is within a valid range
+    // pre : key is unique, name is a valid string, yearOfBirth is a positive integer
     // post: new actor is added to the hash table; if actor already exists, no changes are made
-    void addActor(LinkedList<Actor*>& actors, string& actorName, int yearOfBirth, float rating);
+    bool addActor(int id, LinkedList<Actor*>& actors, string& actorName, int yearOfBirth);
 
     // add a new movie to the hash table
-    // pre : key is unique, title and plot are valid strings, yearOfRelease is a positive integer, and rating is within a valid range
+    // pre : key is unique, title and plot are valid strings, yearOfRelease is a positive integer
     // post: new movie is added to the hash table; if movie already exists, no changes are made
-    void addMovie(LinkedList<Movie*>& movies, string& title, string& plot, int yearOfRelease, float rating);
+    bool addMovie(int id, LinkedList<Movie*>& movies, string& title, string& plot, int yearOfRelease);
 
     // associate an actor with a movie
     // pre : actorKey and movieKey are valid and exist in their respective hash tables
     // post: actor is added to the movie and vice versa; if either is missing, no changes are made
     void addActorToMovie(Movie* movie, Actor* actor);
 
+	bool displayActorReports(Actor* actor);
+
+	bool displayMovieReports(Movie* movie);
+
+	void displayActorReport(Actor* actor, Report* report);
+
+	void displayMovieReport(Movie* movie, Report* report);
+
     // update an actor's details
     // pre : key exists in the hash table, yearOfBirth is a positive integer, and rating is within a valid range
     // post: actor's details are updated; if actor is not found, no changes are made
-    void updateActor(Actor* actor, string& newName, int newYearOfBirth, float newRating);
+    void updateActor(Actor* actor, string& newName, int newYearOfBirth);
 
 	// update a movie's details
 	// pre : key exists in the hash table, yearOfRelease is a positive integer, and rating is within a valid range
 	// post: movie's details are updated; if movie is not found, no changes are made
-    void updateMovie(Movie* movie, string& newTitle, string& newPlot, int newYearOfRelease, float newRating);
+    void updateMovie(Movie* movie, string& newTitle, string& newPlot, int newYearOfRelease);
 
     void handleReport(Report& report);
 };

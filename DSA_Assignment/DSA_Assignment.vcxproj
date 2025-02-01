@@ -134,7 +134,6 @@
     <ClCompile Include="Admin.cpp" />
     <ClCompile Include="Admin.h" />
     <ClCompile Include="DSA_Assignment.cpp" />
-    <ClCompile Include="HashTable.cpp" />
     <ClCompile Include="HashTable.h" />
     <ClCompile Include="Movie.cpp" />
     <ClCompile Include="Report.cpp" />
@@ -143,7 +142,6 @@
   <ItemGroup>
     <ClInclude Include="Actor.h" />
     <ClInclude Include="LinkedList.h" />
-    <ClInclude Include="LinkedList.hpp" />
     <ClInclude Include="Movie.h" />
     <ClInclude Include="Report.h" />
     <ClInclude Include="User.h" />

@@ -3,10 +3,11 @@
 #include <ctime>
 using namespace std;
 
-Actor::Actor(string name, int yearOfBirth, float actorRating) {
+Actor::Actor(int id, string name, int yearOfBirth, float avgActorRating) {
+	this->id = id;
 	this->name = name;
 	this->yearOfBirth = yearOfBirth;
-	this->actorRating = actorRating;
+	this->avgActorRating = avgActorRating;
 }
 
 Actor::~Actor() {
@@ -16,17 +17,56 @@ string Actor::getName() {
 	return name;
 }
 
+int Actor::getId() {
+	return id;
+}
+
 int Actor::getYearOfBirth() {
 	return yearOfBirth;
 }
 
+void Actor::addRating(float rating) {
+	listOfRatings.add(rating);
+	float sum = 0.0f;
+	for (int i = 0; i < listOfRatings.getLength(); ++i) {
+		sum += listOfRatings.get(i);
+	}
+	avgActorRating = sum / listOfRatings.getLength();
+}
+
 float Actor::getActorRating() {
-	return actorRating;
+	return avgActorRating;
+}
+
+bool Actor::listReports() {
+	cout << "Reports for actor " << name << ":" << endl;
+	if (listOfReports.isEmpty()) {
+		cout << "No reports for this actor." << endl;
+		return false;
+	}
+	for (int i = 0; i < listOfReports.getLength(); ++i) {
+		cout << i + 1 << ". " << listOfReports.get(i)->getReportDescription() << endl;
+	}
+	return true;
+}
+
+LinkedList<Report*>& Actor::getReportList() {
+	return listOfReports;
+}
+
+void Actor::displayReport(Report* report) {
+	report->displayReport();
+}
+
+void Actor::addReport(Report* report) {
+	listOfReports.add(report);
 }
 
 void Actor::addMovie(Movie* movie) {
-	listOfMovies.add(movie);
-	movie->addActor(this);
+	if (!listOfMovies.contains(movie)) {
+		listOfMovies.add(movie);
+		movie->addActor(this);
+	}
 }
 
 void Actor::displayMovies() {
@@ -52,8 +92,8 @@ int Actor::getAge() {
 // Update the actor's details
 // pre: newName is a valid string, newYearOfBirth is a positive integer
 // post: updates the name and year of birth of the actor
-void Actor::updateActorDetails(string& newName, int newYearOfBirth, float newActorRating) {
-	if (newName.empty() || newYearOfBirth <= 0 || newActorRating < 0.0 || newActorRating > 5.0) {
+void Actor::updateActorDetails(string& newName, int newYearOfBirth) {
+	if (newName.empty() || newYearOfBirth <= 0) {
 		cout << "Invalid details provided. Update failed." << endl;
 		return;
 	}
@@ -61,10 +101,9 @@ void Actor::updateActorDetails(string& newName, int newYearOfBirth, float newAct
 	// Update attributes
 	name = newName;
 	yearOfBirth = newYearOfBirth;
-	actorRating = newActorRating;
 
 	// Confirmation message
-	cout << "Actor details updated: Name = " << name << ", Year of Birth = " << yearOfBirth << ", Rating = " << actorRating << endl;
+	cout << "Actor details updated: Name = " << name << ", Year of Birth = " << yearOfBirth << endl;
 }
 
 // Get the list of movies the actor has acted in

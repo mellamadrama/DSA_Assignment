@@ -26,35 +26,53 @@ int Admin::getAdminId() {
 // Add a new actor to the list
 // pre: actorName is a valid string, yearOfBirth is a positive integer
 // post: new actor is added to the vector; if actor already exists, no changes are made
-void Admin::addActor(LinkedList<Actor*>& actors, string& actorName, int yearOfBirth, float rating) {
+bool Admin::addActor(int id, LinkedList<Actor*>& actors, string& actorName, int yearOfBirth) {
     for (int i = 0; i < actors.getLength(); ++i) {
         Actor* actor = actors.get(i);
         if (actor->getName() == actorName) {
             cout << "Actor " << actorName << " already exists in the system." << endl;
-            return;
+			return false;
         }
     }
 
-    Actor* newActor = new Actor(actorName, yearOfBirth, 0.0f); // Default rating is 0.0
+    Actor* newActor = new Actor(id, actorName, yearOfBirth, 0.0f);
     actors.add(newActor);
     cout << "Actor " << actorName << " added successfully." << endl;
+    return true;
+}
+
+bool Admin::displayActorReports(Actor* actor) {
+	return actor->listReports();
+}
+
+bool Admin::displayMovieReports(Movie* movie) {
+	return movie->listReports();
+}
+
+void Admin::displayActorReport(Actor* actor, Report* report) {
+	actor->displayReport(report);
+}
+
+void Admin::displayMovieReport(Movie* movie, Report* report) {
+	movie->displayReport(report);
 }
 
 // Add a new movie to the list
 // pre: title and plot are valid strings, yearOfRelease is a positive integer
 // post: new movie is added to the vector; if movie already exists, no changes are made
-void Admin::addMovie(LinkedList<Movie*>& movies, string& title, string& plot, int yearOfRelease, float rating) {
+bool Admin::addMovie(int id, LinkedList<Movie*>& movies, string& title, string& plot, int yearOfRelease) {
     for (int i = 0; i < movies.getLength(); ++i) {
         Movie* movie = movies.get(i);
         if (movie->getTitle() == title) {
             cout << "Movie " << title << " already exists in the system." << endl;
-            return;
+            return false;
         }
     }
 
-    Movie* newMovie = new Movie(title, plot, yearOfRelease, 0.0f); // Default rating is 0.0
+    Movie* newMovie = new Movie(id, title, plot, yearOfRelease, 0.0f); // Default rating is 0.0
     movies.add(newMovie);
     cout << "Movie " << title << " added successfully." << endl;
+    return true;
 }
 
 // Associate an actor with a movie
@@ -73,26 +91,26 @@ void Admin::addActorToMovie(Movie* movie, Actor* actor) {
 // Update an actor's details
 // pre: actor is a valid pointer, yearOfBirth is a positive integer
 // post: actor's details are updated
-void Admin::updateActor(Actor* actor, string& newName, int newYearOfBirth, float newActorRating) {
+void Admin::updateActor(Actor* actor, string& newName, int newYearOfBirth) {
     if (!actor) {
         cout << "Actor not found." << endl;
         return;
     }
 
-    actor->updateActorDetails(newName, newYearOfBirth, newActorRating);
+    actor->updateActorDetails(newName, newYearOfBirth);
     cout << "Actor details updated successfully." << endl;
 }
 
 // Update a movie's details
 // pre: movie is a valid pointer, yearOfRelease is a positive integer
 // post: movie's details are updated
-void Admin::updateMovie(Movie* movie, string& newTitle, string& newPlot, int newYearOfRelease, float newMovieRating) {
+void Admin::updateMovie(Movie* movie, string& newTitle, string& newPlot, int newYearOfRelease) {
     if (!movie) {
         cout << "Movie not found." << endl;
         return;
     }
 
-    movie->updateMovieDetails(newTitle, newPlot, newYearOfRelease, newMovieRating);
+    movie->updateMovieDetails(newTitle, newPlot, newYearOfRelease);
     cout << "Movie details updated successfully." << endl;
 }
 
@@ -102,8 +120,7 @@ void Admin::updateMovie(Movie* movie, string& newTitle, string& newPlot, int new
 void Admin::handleReport(Report& report) {
     cout << "Handling Report ID: " << report.getReportId() << endl;
     cout << "Created By: " << report.getCreatedBy() << endl;
-    cout << "Type: " << report.getType() << endl;
-    cout << "Error Description: " << report.getErrorDescription() << endl;
+    cout << "Error Description: " << report.getReportDescription() << endl;
 
     // Handle report logic (e.g., notify user, log details, etc.)
     cout << "Report handled successfully." << endl;
