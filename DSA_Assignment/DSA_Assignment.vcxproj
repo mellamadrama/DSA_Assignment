@@ -147,16 +147,9 @@
     <ClInclude Include="User.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="actors.csv">
-      <FileType>Document</FileType>
-      <DeploymentContent>true</DeploymentContent>
-    </None>
-    <None Include="cast.csv">
-      <DeploymentContent>true</DeploymentContent>
-    </None>
-    <None Include="movies.csv">
-      <DeploymentContent>true</DeploymentContent>
-    </None>
+    <None Include="..\..\..\..\..\Downloads\Telegram Desktop\DSA_Demo\actors.csv" />
+    <None Include="..\..\..\..\..\Downloads\Telegram Desktop\DSA_Demo\cast.csv" />
+    <None Include="..\..\..\..\..\Downloads\Telegram Desktop\DSA_Demo\movies.csv" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
