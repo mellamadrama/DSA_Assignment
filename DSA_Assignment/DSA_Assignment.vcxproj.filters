@@ -61,13 +61,13 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="actors.csv">
+    <None Include="..\..\..\..\..\Downloads\Telegram Desktop\DSA_Demo\actors.csv">
       <Filter>Csv Files</Filter>
     </None>
-    <None Include="cast.csv">
+    <None Include="..\..\..\..\..\Downloads\Telegram Desktop\DSA_Demo\cast.csv">
       <Filter>Csv Files</Filter>
     </None>
-    <None Include="movies.csv">
+    <None Include="..\..\..\..\..\Downloads\Telegram Desktop\DSA_Demo\movies.csv">
       <Filter>Csv Files</Filter>
     </None>
   </ItemGroup>
