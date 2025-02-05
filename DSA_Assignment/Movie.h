@@ -9,6 +9,9 @@ using namespace std;
 
 class Actor;
 
+extern HashTable<Actor*> actorTable;
+
+
 class Movie {
 private:
     int id;
@@ -19,7 +22,6 @@ private:
     LinkedList<float> listOfRatings;      
     LinkedList<Actor*> listOfActors;
 	LinkedList<Report*> listOfReports;
-	HashTable<Actor*> actorTable;
     
 public:
     // Constructor

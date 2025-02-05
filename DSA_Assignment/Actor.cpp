@@ -5,7 +5,7 @@
 using namespace std;
 
 Actor::Actor(int id, string name, int yearOfBirth, float avgActorRating)
-	: id(id), name(name), yearOfBirth(yearOfBirth), avgActorRating(avgActorRating), movieTable(20000) {
+	: id(id), name(name), yearOfBirth(yearOfBirth), avgActorRating(avgActorRating) {
 }
 
 Actor::~Actor() {
@@ -61,17 +61,11 @@ void Actor::addReport(Report* report) {
 }
 
 void Actor::addMovie(Movie* movie) {
-	cout << "Searching for Movie ID: " << movie->getId() << " (" << movie->getTitle() << ") in movieTable" << endl;
-	Movie** foundMovie = movieTable.search(movie->getId());
-	cout << "Search Result: " << foundMovie << endl;
-
-	if (!foundMovie) {
+	if (!listOfMovies.contains(movie->getId())) {
 		cout << "Adding " << name << " to " << movie->getTitle() << endl;
 		listOfMovies.add(movie);
 		movie->addActor(this);
-	}
-	else {
-		cout << "Movie already linked to actor: " << name << endl;
+		return;
 	}
 }
 
@@ -87,12 +81,7 @@ void Actor::displayMovies() {
 }
 
 int Actor::getAge() {
-	time_t timeUnix = time(0);
-	tm now;
-	localtime_s(&now, &timeUnix);
-	int currentYear = now.tm_year + 1900;
-
-	return currentYear - yearOfBirth;
+	return 2025 - yearOfBirth;
 }
 
 // Update the actor's details

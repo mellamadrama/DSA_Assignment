@@ -8,6 +8,8 @@ using namespace std;
 
 class Movie;
 
+extern HashTable<Movie*> movieTable;
+
 class Actor {
 private:
     int id;
@@ -17,7 +19,6 @@ private:
 	LinkedList<Report*> listOfReports;
 	LinkedList<float> listOfRatings;
     LinkedList<Movie*> listOfMovies;
-	HashTable<Movie*> movieTable;
 
 public:
     // Constructor

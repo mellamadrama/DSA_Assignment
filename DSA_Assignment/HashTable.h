@@ -17,13 +17,13 @@ private:
         Node(KeyType k, ValueType v) : key(k), value(v), next(nullptr) {}
     };
 
-    Node** table;
     int max_size;
     int size;
+    Node** table;
 
     // Hash function to compute the index for a key
     int hashFunction(KeyType key) const {
-        return key % max_size;
+        return (key * 2654435761) % max_size;
     }
 
 public:
@@ -55,6 +55,7 @@ HashTable<ValueType>::HashTable(int max_size) : max_size(max_size), size(0) {
 // Destructor
 template <typename ValueType>
 HashTable<ValueType>::~HashTable() {
+    cout << "Destructor called" << endl;
     for (int i = 0; i < max_size; ++i) {
         Node* current = table[i];
         while (current) {
@@ -70,24 +71,26 @@ HashTable<ValueType>::~HashTable() {
 template <typename ValueType>
 void HashTable<ValueType>::insert(KeyType key, const ValueType& value) {
     int index = hashFunction(key);
-    cout << "Inserting key: " << key << " at index: " << index << endl;
-    Node* current = table[index];
-
-    // Check if the key already exists
-    while (current != nullptr) {
-        if (current->key == key) {
-            current->value = value;  // Update existing key
-            cout << "Updated Movie: " << key << " at index: " << index << endl;
-            return;
-        }
-        current = current->next;
-        cout << "Inserted Movie: " << key << " at index: " << index << endl;
+    // Allocate new Node if table[index] is null
+    if (table[index] == nullptr) {
+        table[index] = new Node(key, value);
     }
+    else {
+        Node* current = table[index];
 
-    // Insert new node
-    Node* newNode = new Node(key, value);
-    newNode->next = table[index];
-    table[index] = newNode;
+        // Traverse the linked list to handle collisions
+        while (current->next != nullptr) {
+            // Update value if key already exists
+            if (current->key == key) {
+                current->value = value;
+                return;
+            }
+            current = current->next;
+        }
+
+        // Add new node at the end of the linked list
+        current->next = new Node(key, value);
+    }
     size++;
 }
 
@@ -97,9 +100,7 @@ ValueType* HashTable<ValueType>::search(KeyType key) {
     int index = hashFunction(key);
     Node* current = table[index];
     while (current != nullptr) {
-        if (current->key == key) {
-            return &current->value;
-        }
+        return &current->value;
         current = current->next;
     }
     return nullptr;

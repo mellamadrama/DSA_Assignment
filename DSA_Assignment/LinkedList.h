@@ -4,7 +4,10 @@
 using namespace std;
 
 template <typename T>
+extern HashTable<T>* hashTable;
 
+
+template <typename T>
 class LinkedList{
 private:
 	struct Node
@@ -16,7 +19,6 @@ private:
 	Node* firstNode;	// point to the first item
 	Node* backNode;     // point to the last item
 	int  size;			// number of items in the list
-	HashTable<T>* hashTable; //initialize hash table
 
 	//Helper functions
 	Node* mergeSort(Node* head, bool (*compare)(T, T));
@@ -82,7 +84,6 @@ LinkedList<T>::LinkedList() {
 	firstNode = NULL;
 	backNode = NULL;
 	size = 0;
-	hashTable = new HashTable<T>(20000);
 }
 
 template <typename T>
@@ -90,25 +91,31 @@ LinkedList<T>::~LinkedList() {
 	while (!isEmpty()) {
 		remove(0);
 	}
-	delete hashTable;
+	delete hashTable<T>;
 }
 
 // Merge two sorted linked lists
 template <typename T>
 typename LinkedList<T>::Node* LinkedList<T>::merge(Node* left, Node* right, bool (*compare)(T, T)) {
-	if (!left) return right;
-	if (!right) return left;
+	Node dummy;            // Dummy node to simplify edge cases
+	Node* tail = &dummy;   // Pointer to track the merged list
 
-	Node* result = nullptr;
-	if (compare(left->item, right->item)) {
-		result = left;
-		result->next = merge(left->next, right, compare);
+	while (left && right) {
+		if (compare(left->item, right->item)) {
+			tail->next = left;
+			left = left->next;
+		}
+		else {
+			tail->next = right;
+			right = right->next;
+		}
+		tail = tail->next;
 	}
-	else {
-		result = right;
-		result->next = merge(left, right->next, compare);
-	}
-	return result;
+
+	// Attach the remaining nodes
+	tail->next = (left) ? left : right;
+
+	return dummy.next;  // Return the merged list, skipping the dummy node
 }
 
 // Find the middle node of the linked list
@@ -166,7 +173,7 @@ bool LinkedList<T>::add(T item) {
 		current->next = node;
 	}
 	size++;
-	hashTable->insert(size, item);
+	hashTable<T>->insert(size, item);
 	return true;
 }
 
@@ -199,7 +206,7 @@ bool LinkedList<T>::add(int index, T item) {
 
 template <typename T>
 bool LinkedList<T>::contains(KeyType key) {
-	return hashTable->search(key) != nullptr;
+	return hashTable<T>->search(key);
 }
 
 template <typename T>

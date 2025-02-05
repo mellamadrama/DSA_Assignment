@@ -6,3 +6,5 @@
 
 extern HashTable<Actor*> actorTable;
 extern HashTable<Movie*> movieTable;
+template <typename T>
+extern HashTable<T>* hashTable;

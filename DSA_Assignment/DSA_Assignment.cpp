@@ -12,31 +12,27 @@
 #include <string>
 using namespace std;
 
-void parseLine(const char* line, LinkedList<char*>& fields) {
-    bool ignore = false; // ignore commas if true
-    char* currentField = new char[256]; // Larger buffer to reduce frequent allocations
-    int charIndex = 0;
+HashTable<Actor*> actorTable(20000);
+HashTable<Movie*> movieTable(20000);
+template<>
+HashTable<Actor*>* hashTable<Actor*> = new HashTable<Actor*>(20000);
 
-    for (int i = 0; line[i] != '\0'; i++) {
-        char current = line[i];
-        if (current == '"') {
-            ignore = !ignore; // Toggle ignore state
-        }
-        else if (current == ',' && !ignore) {
-            currentField[charIndex] = '\0'; // End current field
-            fields.add(currentField);
-            currentField = new char[256];
-            charIndex = 0;
-        }
-        else {
-            currentField[charIndex++] = current;
-        }
-    }
-    currentField[charIndex] = '\0'; // Add null-terminator for the last field
-    fields.add(currentField);
-}
+template<>
+HashTable<Movie*>* hashTable<Movie*> = new HashTable<Movie*>(20000);
 
-void loadCSVData(LinkedList<Actor*>& actors, LinkedList<Movie*>& movies, HashTable<Actor*>& actorTable, HashTable<Movie*>& movieTable) {
+template<>
+HashTable<User*>* hashTable<User*> = new HashTable<User*>(20000);
+
+template<>
+HashTable<Admin*>* hashTable<Admin*> = new HashTable<Admin*>(20000);
+
+template<>
+HashTable<Report*>* hashTable<Report*> = new HashTable<Report*>(20000);
+
+template<>
+HashTable<float>* hashTable<float> = new HashTable<float>(20000);
+
+void loadCSVData(LinkedList<Actor*>& actors, LinkedList<Movie*>& movies, HashTable<Actor*>& actorTable, HashTable<Movie*>& movieTable){
     ifstream actorsFile("actors.csv");
     ifstream moviesFile("movies.csv");
     ifstream castFile("cast.csv");
@@ -54,9 +50,8 @@ void loadCSVData(LinkedList<Actor*>& actors, LinkedList<Movie*>& movies, HashTab
             int actorId = stoi(id);
             if (actorTable.search(actorId) == nullptr) {  // Only insert if actor doesn't exist
                 Actor* actor = new Actor(actorId, name, stoi(birth), 0.0f);
-				//actors.add(actor);
+				actors.add(actor);
                 actorTable.insert(actorId, actor);
-                cout << "Inserted Actor: " << name << " (ID: " << actorId << ")" << endl;
             }
         }
         actorsFile.close();
@@ -91,15 +86,8 @@ void loadCSVData(LinkedList<Actor*>& actors, LinkedList<Movie*>& movies, HashTab
 
             int movieId = stoi(id);
 			Movie* movie = new Movie(movieId, title, plot, stoi(year), 0.0f);
-			//movies.add(movie);
+			movies.add(movie);
             movieTable.insert(movieId, movie);
-            Movie** verify = movieTable.search(movie->getId());
-            if (verify) {
-                cout << "Verified Movie: " << (*verify)->getTitle() << endl;
-            }
-            else {
-                cout << "Insertion failed for Movie ID: " << movie->getId() << endl;
-            }
         }
         moviesFile.close();
     }
@@ -117,44 +105,21 @@ void loadCSVData(LinkedList<Actor*>& actors, LinkedList<Movie*>& movies, HashTab
             getline(ss, actorId, ',');
             getline(ss, movieId, ',');
 
-            // Debug: Print the actorId and movieId being processed
-            cout << "Processing cast entry: Actor ID = " << actorId
-                << ", Movie ID = " << movieId << endl;
-
             // Find actor and movie by Id
             Actor** actorPtr = actorTable.search(stoi(actorId));
-            Actor* actor = (actorPtr != nullptr) ? *actorPtr : nullptr;
+            Actor* actor = actorPtr ? *actorPtr : nullptr;
 
             Movie** moviePtr = movieTable.search(stoi(movieId));
-            Movie* movie = (moviePtr != nullptr) ? *moviePtr : nullptr;
-
-            // Debug: Check if actor and movie were found
-            if (actorPtr == nullptr) {
-                cout << "Actor with ID " << actorId << " not found in actorTable." << endl;
-            }
-            else {
-                cout << "Found Actor: " << actor->getName() << " (ID: " << actor->getId() << ")" << endl;
-            }
-
-            if (moviePtr == nullptr) {
-                cout << "Movie with ID " << movieId << " not found in movieTable." << endl;
-            }
-            else {
-                cout << "Found Movie: " << movie->getTitle() << " (ID: " << movie->getId() << ")" << endl;
-            }
+            Movie* movie = moviePtr ? *moviePtr : nullptr;
 
             // Link movie with actor
-            if (actor != nullptr && movie != nullptr) {
-                cout << "Linking Actor '" << actor->getName() << "' to Movie '" << movie->getTitle() << "'" << endl;
+            if (actor && movie) {
                 actor->addMovie(movie);
                 movie->addActor(actor);
             }
-            else {
-                cout << "Could not find actor or movie for ID pair (Actor: "
-                    << actorId << ", Movie: " << movieId << ")" << endl;
-            }
         }
         castFile.close();
+
     }
 }
 
@@ -192,8 +157,6 @@ int main()
 {
     LinkedList<Actor*> actors;
     LinkedList<Movie*> movies;
-    HashTable<Actor*> actorTable(20000);
-    HashTable<Movie*> movieTable(20000);
 
     loadCSVData(actors, movies, actorTable, movieTable);
 

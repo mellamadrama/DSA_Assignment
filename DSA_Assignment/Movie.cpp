@@ -7,7 +7,7 @@ using namespace std;
 // pre: title and plot are valid strings, yearOfRelease is a positive integer, initialRating is within a valid range
 // post: Movie object is initialized with the given attributes
 Movie::Movie(int id, string& title, string& plot, int yearOfRelease, float initialRating)
-	: id(id), title(title), plot(plot), yearOfRelease(yearOfRelease), avgMovieRating(initialRating), actorTable(20000) {
+	: id(id), title(title), plot(plot), yearOfRelease(yearOfRelease), avgMovieRating(initialRating) {
 }
 
 Movie::~Movie() {}
@@ -66,9 +66,10 @@ float Movie::getMovieRating() {
 }
 
 void Movie::addActor(Actor* actor) {
-    if (!actorTable.search(actor->getId())) {
+    if (!listOfActors.contains(actor->getId())) {
         listOfActors.add(actor);
         actor->addMovie(this);
+        return;
     }
 }
 
