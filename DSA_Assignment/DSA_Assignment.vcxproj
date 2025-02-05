@@ -141,15 +141,16 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Actor.h" />
+    <ClInclude Include="Global.h" />
     <ClInclude Include="LinkedList.h" />
     <ClInclude Include="Movie.h" />
     <ClInclude Include="Report.h" />
     <ClInclude Include="User.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\..\..\..\Downloads\Telegram Desktop\DSA_Demo\actors.csv" />
-    <None Include="..\..\..\..\..\Downloads\Telegram Desktop\DSA_Demo\cast.csv" />
-    <None Include="..\..\..\..\..\Downloads\Telegram Desktop\DSA_Demo\movies.csv" />
+    <None Include="actors.csv" />
+    <None Include="cast.csv" />
+    <None Include="movies.csv" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

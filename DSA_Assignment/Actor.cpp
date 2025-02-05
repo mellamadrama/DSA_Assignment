@@ -1,13 +1,11 @@
 #include "Actor.h"
 #include <iostream>
 #include <ctime>
+#include "Global.h"
 using namespace std;
 
-Actor::Actor(int id, string name, int yearOfBirth, float avgActorRating) {
-	this->id = id;
-	this->name = name;
-	this->yearOfBirth = yearOfBirth;
-	this->avgActorRating = avgActorRating;
+Actor::Actor(int id, string name, int yearOfBirth, float avgActorRating)
+	: id(id), name(name), yearOfBirth(yearOfBirth), avgActorRating(avgActorRating), movieTable(20000) {
 }
 
 Actor::~Actor() {
@@ -63,9 +61,17 @@ void Actor::addReport(Report* report) {
 }
 
 void Actor::addMovie(Movie* movie) {
-	if (!listOfMovies.contains(movie)) {
+	cout << "Searching for Movie ID: " << movie->getId() << " (" << movie->getTitle() << ") in movieTable" << endl;
+	Movie** foundMovie = movieTable.search(movie->getId());
+	cout << "Search Result: " << foundMovie << endl;
+
+	if (!foundMovie) {
+		cout << "Adding " << name << " to " << movie->getTitle() << endl;
 		listOfMovies.add(movie);
 		movie->addActor(this);
+	}
+	else {
+		cout << "Movie already linked to actor: " << name << endl;
 	}
 }
 

@@ -2,6 +2,7 @@
 
 #include <string>
 #include "LinkedList.h"
+#include "Global.h"
 #include "Actor.h"
 #include "Report.h"
 using namespace std;
@@ -18,6 +19,7 @@ private:
     LinkedList<float> listOfRatings;      
     LinkedList<Actor*> listOfActors;
 	LinkedList<Report*> listOfReports;
+	HashTable<Actor*> actorTable;
     
 public:
     // Constructor

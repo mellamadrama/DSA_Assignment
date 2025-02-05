@@ -44,7 +44,7 @@ public:
 	//       size of list is increased by 1
 	bool add(int index, T item);
 
-	bool contains(T item);
+	bool contains(KeyType key);
 
 	// remove an item at a specified position in the list
 	// pre : 0 <= index < size
@@ -82,7 +82,7 @@ LinkedList<T>::LinkedList() {
 	firstNode = NULL;
 	backNode = NULL;
 	size = 0;
-	hashTable = new HashTable<T>(100);
+	hashTable = new HashTable<T>(20000);
 }
 
 template <typename T>
@@ -198,8 +198,8 @@ bool LinkedList<T>::add(int index, T item) {
 }
 
 template <typename T>
-bool LinkedList<T>::contains(T item) {
-	return hashTable->search(item);
+bool LinkedList<T>::contains(KeyType key) {
+	return hashTable->search(key) != nullptr;
 }
 
 template <typename T>

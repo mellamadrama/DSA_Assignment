@@ -1,16 +1,13 @@
 #include "Movie.h"
 #include <iostream>
+#include "Global.h"
 using namespace std;
 
 // Constructor
 // pre: title and plot are valid strings, yearOfRelease is a positive integer, initialRating is within a valid range
 // post: Movie object is initialized with the given attributes
-Movie::Movie(int id, string& title, string& plot, int yearOfRelease, float avgMovieRating){
-	this->id = id;
-	this->title = title;
-	this->plot = plot;
-	this->yearOfRelease = yearOfRelease;
-	this->avgMovieRating = avgMovieRating;
+Movie::Movie(int id, string& title, string& plot, int yearOfRelease, float initialRating)
+	: id(id), title(title), plot(plot), yearOfRelease(yearOfRelease), avgMovieRating(initialRating), actorTable(20000) {
 }
 
 Movie::~Movie() {}
@@ -69,7 +66,7 @@ float Movie::getMovieRating() {
 }
 
 void Movie::addActor(Actor* actor) {
-    if (!listOfActors.contains(actor)) {
+    if (!actorTable.search(actor->getId())) {
         listOfActors.add(actor);
         actor->addMovie(this);
     }

@@ -59,15 +59,18 @@
     <ClInclude Include="LinkedList.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Global.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\..\..\..\Downloads\Telegram Desktop\DSA_Demo\actors.csv">
+    <None Include="actors.csv">
       <Filter>Csv Files</Filter>
     </None>
-    <None Include="..\..\..\..\..\Downloads\Telegram Desktop\DSA_Demo\cast.csv">
+    <None Include="cast.csv">
       <Filter>Csv Files</Filter>
     </None>
-    <None Include="..\..\..\..\..\Downloads\Telegram Desktop\DSA_Demo\movies.csv">
+    <None Include="movies.csv">
       <Filter>Csv Files</Filter>
     </None>
   </ItemGroup>

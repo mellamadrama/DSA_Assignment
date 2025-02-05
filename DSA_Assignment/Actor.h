@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include "LinkedList.h"
+#include "Global.h"
 #include "Movie.h"
 #include "Report.h"
 using namespace std;
@@ -16,6 +17,7 @@ private:
 	LinkedList<Report*> listOfReports;
 	LinkedList<float> listOfRatings;
     LinkedList<Movie*> listOfMovies;
+	HashTable<Movie*> movieTable;
 
 public:
     // Constructor
