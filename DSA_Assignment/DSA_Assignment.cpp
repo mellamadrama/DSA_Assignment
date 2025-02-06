@@ -106,11 +106,16 @@ void loadCSVData(LinkedList<Actor*>& actors, LinkedList<Movie*>& movies, HashTab
             getline(ss, movieId, ',');
 
             // Find actor and movie by Id
-            Actor** actorPtr = actorTable.search(stoi(actorId));
+            Actor** actorPtr = actorTable.search(stol(actorId));
             Actor* actor = actorPtr ? *actorPtr : nullptr;
 
-            Movie** moviePtr = movieTable.search(stoi(movieId));
+            Movie** moviePtr = movieTable.search(stol(movieId));
             Movie* movie = moviePtr ? *moviePtr : nullptr;
+
+			cout << "Actor: " << stol(actorId) << " Movie: " << stol(movieId) << endl;
+
+			cout << "Movie: " << movie->getTitle() << " ID: " << movie->getId() << endl;
+			cout << "Actor: " << actor->getName() << " ID: " << actor->getId() << endl;
 
             // Link movie with actor
             if (actor && movie) {

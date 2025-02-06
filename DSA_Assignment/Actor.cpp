@@ -62,7 +62,7 @@ void Actor::addReport(Report* report) {
 
 void Actor::addMovie(Movie* movie) {
 	if (!listOfMovies.contains(movie->getId())) {
-		cout << "Adding " << name << " to " << movie->getTitle() << endl;
+		//cout << "Adding " << name << " to " << movie->getTitle() << endl;
 		listOfMovies.add(movie);
 		movie->addActor(this);
 		return;

@@ -23,7 +23,7 @@ private:
 
     // Hash function to compute the index for a key
     int hashFunction(KeyType key) const {
-        return (key * 2654435761) % max_size;
+        return key % max_size;
     }
 
 public:
@@ -71,27 +71,47 @@ HashTable<ValueType>::~HashTable() {
 template <typename ValueType>
 void HashTable<ValueType>::insert(KeyType key, const ValueType& value) {
     int index = hashFunction(key);
+    std::cout << "[DEBUG] Inserting key: " << key
+        << " at index: " << index
+        << " with value: " << value << std::endl;  // Assuming ValueType has getName()
+
     // Allocate new Node if table[index] is null
     if (table[index] == nullptr) {
         table[index] = new Node(key, value);
+        std::cout << "[DEBUG] Inserted as new node at index " << index
+            << " (no collision)" << std::endl;
     }
     else {
         Node* current = table[index];
+        std::cout << "[DEBUG] Collision detected at index " << index
+            << ", traversing linked list..." << std::endl;
 
         // Traverse the linked list to handle collisions
-        while (current->next != nullptr) {
+        while (current != nullptr) {
+            std::cout << "[DEBUG] Checking node with key: " << current->key << std::endl;
+
             // Update value if key already exists
             if (current->key == key) {
+                std::cout << "[DEBUG] Key " << key
+                    << " already exists, updating value to "
+                    << value << std::endl;
                 current->value = value;
                 return;
             }
+
+            // Move to the next node
+            if (current->next == nullptr) break;
             current = current->next;
         }
 
         // Add new node at the end of the linked list
         current->next = new Node(key, value);
+        std::cout << "[DEBUG] Appended new node with key: " << key
+            << " at index: " << index << std::endl;
     }
+
     size++;
+    std::cout << "[DEBUG] Hash table size is now: " << size << std::endl;
 }
 
 // Search a value by key
@@ -99,6 +119,7 @@ template <typename ValueType>
 ValueType* HashTable<ValueType>::search(KeyType key) {
     int index = hashFunction(key);
     Node* current = table[index];
+	cout << "Searching for key " << key << " at index " << index << endl;
     while (current != nullptr) {
         return &current->value;
         current = current->next;
