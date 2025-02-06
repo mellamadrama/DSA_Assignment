@@ -32,6 +32,49 @@ HashTable<Report*>* hashTable<Report*> = new HashTable<Report*>(20000);
 template<>
 HashTable<float>* hashTable<float> = new HashTable<float>(20000);
 
+void clearInputStream() {
+    cin.clear();
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+}
+
+int getValidIntInput(const string& prompt, int minValue = 0) {
+    int input;
+    while (true) {
+        cout << prompt;
+        cin >> input;
+        if (cin.fail() || input < minValue) {
+            clearInputStream();
+            cout << "Invalid input. Please try again." << endl;
+        }
+        else {
+            return input;
+        }
+    }
+}
+
+float getValidFloatInput(const string& prompt, float minValue = 0.0f, float maxValue = 5.0f) {
+    float input;
+    while (true) {
+        cout << prompt;
+        cin >> input;
+        if (cin.fail() || input < minValue || input > maxValue) {
+            clearInputStream();
+            cout << "Invalid input. Please enter a value between " << minValue << " and " << maxValue << "." << endl;
+        }
+        else {
+            return input;
+        }
+    }
+}
+
+string getValidStringInput(const string& prompt) {
+    string input;
+    cout << prompt;
+    cin.ignore();
+    getline(cin, input);
+    return input;
+}
+
 void loadCSVData(LinkedList<Actor*>& actors, LinkedList<Movie*>& movies, HashTable<Actor*>& actorTable, HashTable<Movie*>& movieTable){
     ifstream actorsFile("actors.csv");
     ifstream moviesFile("movies.csv");
@@ -168,17 +211,7 @@ int main()
     while (true)
     {
         displayMainMenu();
-        int choice;
-        cin >> choice;
-
-        if (cin.fail() || (choice < 1 || choice > 3))
-        {
-            cin.clear();
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
-            cout << "Invalid choice. Please try again." << endl;
-            cout << endl;
-            continue;
-        }
+        int choice = getValidIntInput("", 1);
 
         if (choice == 1)
         {
@@ -210,12 +243,7 @@ int main()
         }
         else if (choice == 2) 
         {
-            cout << endl;
-            cout << "Enter your full name: ";
-            cin.ignore();
-            string fullName;
-            getline(cin, fullName);
-
+            string fullName = getValidStringInput("Enter your full name: ");
             Admin* selectedAdmin = nullptr;
             for (int i = 0; i < adminList.getLength(); ++i)
             {
@@ -267,40 +295,18 @@ void userOptions(User* user, LinkedList<Actor*>& actors, LinkedList<Movie*>& mov
         cout << "12. Logout" << endl;
         cout << "Select an option: ";
 
-        int choice;
-        cin >> choice;
-
-        if (cin.fail() || choice < 1 || choice > 12) {
-            cin.clear();
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
-            cout << "Invalid option. Please try again." << endl;
-            cout << endl;
-            continue;
-        }
+        int choice = getValidIntInput("Select an option: ", 1);
+		if (choice < 1 || choice > 12)
+		{
+			cout << "Invalid choice. Please try again." << endl;
+			continue;
+		}
 
         if (choice == 1)
         {
             cout << endl;
-            int x, y;
-            cout << "Enter minimum age (x): ";
-            cin >> x;
-            while (cin.fail() || x < 0) {
-                cin.clear();
-                cin.ignore(numeric_limits<streamsize>::max(), '\n');
-                cout << "Invalid choice. Please enter again: ";
-                cin >> x;
-            }
-
-            cout << endl;
-            cout << "Enter maximum age (y): ";
-            cin >> y;
-            while (cin.fail() || y < 0 || y < x) {
-                cin.clear();
-                cin.ignore(numeric_limits<streamsize>::max(), '\n');
-                cout << "Invalid choice. Please enter again: ";
-                cin >> y;
-            }
-
+            int x = getValidIntInput("Enter minimum age (x): ", 0);
+            int y = getValidIntInput("Enter maximum age (y): ", x);
             cout << endl;
             user->displayActorInRange(actors, x, y);
             cout << endl;
@@ -314,17 +320,7 @@ void userOptions(User* user, LinkedList<Actor*>& actors, LinkedList<Movie*>& mov
         else if (choice == 3)
         {
             cout << endl;
-            cout << "Enter an actor by actor id: ";
-
-            int idChoice;
-            cin >> idChoice;
-            while (cin.fail() || idChoice < 0) {
-                cin.clear();
-                cin.ignore(numeric_limits<streamsize>::max(), '\n');
-                cout << "Invalid choice. Please enter again: ";
-                cin >> idChoice;
-            }
-
+            int idChoice = getValidIntInput("Enter an actor by actor id: ");
             cout << endl;
             user->displayMovieWithActor(*actors.getById(idChoice));
             cout << endl;
@@ -332,17 +328,7 @@ void userOptions(User* user, LinkedList<Actor*>& actors, LinkedList<Movie*>& mov
         else if (choice == 4)
         {
             cout << endl;
-            cout << "Enter a movie by movie id: ";
-         
-            int idChoice;
-            cin >> idChoice;
-            while (cin.fail() || idChoice < 0) {
-                cin.clear();
-                cin.ignore(numeric_limits<streamsize>::max(), '\n');
-                cout << "Invalid choice. Please enter again: ";
-                cin >> idChoice;
-            }
-
+            int idChoice = getValidIntInput("Enter a movie by movie id: ");
             cout << endl;
             user->displayAllActorsInMovie(movies.getById(idChoice));
             cout << endl;
@@ -350,143 +336,64 @@ void userOptions(User* user, LinkedList<Actor*>& actors, LinkedList<Movie*>& mov
         else if (choice == 5)
         {
             cout << endl;
-            cout << "Enter an actor by actor id: ";
-
-            int idChoice;
-            cin >> idChoice;
-            while (cin.fail() || idChoice < 0) {
-                cin.clear();
-                cin.ignore(numeric_limits<streamsize>::max(), '\n');
-                cout << "Invalid choice. Please enter again: ";
-                cin >> idChoice;
-            }
-
+            int idChoice = getValidIntInput("Enter an actor by actor id: ");
             cout << endl;
             user->displayActorConnections(actors.getById(idChoice));
             cout << endl;
         }
-        else if (choice == 6) 
+        else if (choice == 6)
         {
             cout << endl;
-			cout << "Enter an actor id to rate: ";
-
-			int idChoice;
-			cin >> idChoice;
-            while (cin.fail() || idChoice < 0) {
-                cin.clear();
-                cin.ignore(numeric_limits<streamsize>::max(), '\n');
-                cout << "Invalid choice. Please enter again: ";
-                cin >> idChoice;
-            }
-
+            int idChoice = getValidIntInput("Enter an actor id to rate: ");
+            float rating = getValidFloatInput("Enter rating for the actor: ");
+            user->addActorRating(actors.getById(idChoice), rating);
             cout << endl;
-			cout << "Enter rating for the actor: ";
-			float rating;
-			cin >> rating;
-			while (cin.fail() || rating < 0.0f || rating > 5.0f) {
-                cin.clear();
-                cin.ignore(numeric_limits<streamsize>::max(), '\n');
-				cout << "Invalid rating. Must be between 0 and 5. Please enter again: ";
-				cin >> rating;
-			}
-			user->addActorRating(actors.getById(idChoice), rating);
-            cout << endl;
-			user->displayActorRating(actors.getById(idChoice));
+            user->displayActorRating(actors.getById(idChoice));
             cout << endl;
         }
-        else if (choice == 7) 
+        else if (choice == 7)
         {
             cout << endl;
-			cout << "Enter a movie id to rate: ";
-
-            int idChoice;
-            cin >> idChoice;
-            while (cin.fail() || idChoice < 0) {
-                cin.clear();
-                cin.ignore(numeric_limits<streamsize>::max(), '\n');
-                cout << "Invalid choice. Please enter again: ";
-                continue;
-            }
-
+            int idChoice = getValidIntInput("Enter a movie id to rate: ");
+            float rating = getValidFloatInput("Enter rating for the movie: ");
+            user->addMovieRating(movies.getById(idChoice), rating);
             cout << endl;
-            cout << "Enter rating for the movie: ";
-            float rating;
-            cin >> rating;
-            while (cin.fail() || rating < 0.0f || rating > 5.0f) {
-                cin.clear();
-                cin.ignore(numeric_limits<streamsize>::max(), '\n');
-                cout << "Invalid rating. Must be between 0 and 5. Please enter again: ";
-                cin >> rating;
-            }
-
-			user->addMovieRating(movies.getById(idChoice), rating);
-            cout << endl;
-			user->displayMovieRating(movies.getById(idChoice));
+            user->displayMovieRating(movies.getById(idChoice));
             cout << endl;
         }
-        else if (choice == 8) 
+        else if (choice == 8)
         {
             cout << endl;
-			user->displayMovieRecommendation(movies);
+            user->displayMovieRecommendation(movies);
             cout << endl;
         }
-        else if (choice == 9) 
+        else if (choice == 9)
         {
             cout << endl;
-			user->displayActorRecommendation(actors);
+            user->displayActorRecommendation(actors);
             cout << endl;
         }
-        else if (choice == 10) 
+        else if (choice == 10)
         {
             cout << endl;
-			string userName = user->getName();
-			cout << "Enter an actor id: ";
-
-			int idChoice;
-			cin >> idChoice;
-            while (cin.fail() || idChoice < 0) {
-                cin.clear();
-                cin.ignore(numeric_limits<streamsize>::max(), '\n');
-                cout << "Invalid choice. Please enter again: ";
-                cin >> idChoice;
-            }
-
-            cout << endl;
-			string reportDescription;
-			cout << "Enter report description: ";
-			cin.ignore();
-			getline(cin, reportDescription);
-			Report* report = new Report(userName, reportDescription);
-			user->addActorReport(actors.getById(idChoice), report);
-			cout << "Report added successfully." << endl;
+            int idChoice = getValidIntInput("Enter an actor id: ");
+            string reportDescription = getValidStringInput("Enter report description: ");
+            Report* report = new Report(user->getName(), reportDescription);
+            user->addActorReport(actors.getById(idChoice), report);
+            cout << "Report added successfully." << endl;
             cout << endl;
         }
         else if (choice == 11)
         {
             cout << endl;
-			string userName = user->getName();
-			cout << "Enter a movie id: ";
-
-			int idChoice;
-			cin >> idChoice;
-            while (cin.fail() || idChoice < 0) {
-                cin.clear();
-                cin.ignore(numeric_limits<streamsize>::max(), '\n');
-                cout << "Invalid choice. Please enter again: ";
-                cin >> idChoice;
-            }
-
-            cout << endl;
-			string reportDescription;
-			cout << "Enter report description: ";
-			cin.ignore();
-			getline(cin, reportDescription);
-			Report* report = new Report(userName, reportDescription);
-			user->addMovieReport(movies.getById(idChoice), report);
-			cout << "Report added successfully." << endl;
+            int idChoice = getValidIntInput("Enter a movie id: ");
+            string reportDescription = getValidStringInput("Enter report description: ");
+            Report* report = new Report(user->getName(), reportDescription);
+            user->addMovieReport(movies.getById(idChoice), report);
+            cout << "Report added successfully." << endl;
             cout << endl;
         }
-        else if (choice == 12) 
+        else if (choice == 12)
         {
             cout << endl;
             break;
@@ -505,239 +412,67 @@ void adminOptions(Admin* admin, LinkedList<Actor*>& actors, LinkedList<Movie*>& 
         cout << "3. Add an actor to a movie" << endl;
         cout << "4. Update actor details" << endl;
         cout << "5. Update movie details" << endl;
-		cout << "6. View Actor Reports" << endl;
-		cout << "7. View Movie Reports" << endl;
-		cout << "8. Logout" << endl;
-        cout << "Select an option: ";
+        cout << "6. View Actor Reports" << endl;
+        cout << "7. View Movie Reports" << endl;
+        cout << "8. Logout" << endl;
 
-        int choice;
-        cin >> choice;
-
-        if (cin.fail() || choice < 1 || choice > 8) {
-            cin.clear();
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
-            cout << "Invalid option. Please try again" << endl;
-            cout << endl;
-            continue;
-        }
+        int choice = getValidIntInput("Select an option: ", 1);
+		if (choice < 1 || choice > 8)
+		{
+			cout << "Invalid choice. Please try again." << endl;
+			continue;
+		}
 
         if (choice == 1)
         {
-            string actorName;
-            int yearOfBirth, id;
             cout << endl;
-			cout << "Enter Actor ID: ";
-			cin >> id;
-
-            cout << "Enter actor name: ";
-            cin.ignore();
-            getline(cin, actorName);
-
-            cout << "Enter year of birth: ";
-            cin >> yearOfBirth;
-
-            bool valid = admin->addActor(id, actors, actorName, yearOfBirth);
-			if (valid)
-			{
-				cout << "Actor added successfully." << endl;
-			}
+            int id = getValidIntInput("Enter Actor ID: ");
+            string actorName = getValidStringInput("Enter actor name: ");
+            int yearOfBirth = getValidIntInput("Enter year of birth: ", 1900);
+            if (admin->addActor(id, actors, actorName, yearOfBirth))
+                cout << "Actor added successfully." << endl;
         }
-        else if (choice == 2) 
+        else if (choice == 2)
         {
-            string title, plot;
-            int yearOfRelease, id;
-
-			cout << "Enter Movie ID: ";
-			cin >> id;
-
-            cout << "Enter movie title: ";
-            cin.ignore();
-            getline(cin, title);
-
-            cout << "Enter plot: ";
-            cin >> plot;
-
-            cout << "Enter year of release: ";
-            cin >> yearOfRelease;
-
-			bool valid = admin->addMovie(id, movies, title, plot, yearOfRelease);
-            if (valid)
-            {
+            int id = getValidIntInput("Enter Movie ID: ");
+            string title = getValidStringInput("Enter movie title: ");
+            string plot = getValidStringInput("Enter plot: ");
+            int yearOfRelease = getValidIntInput("Enter year of release: ", 1900);
+            if (admin->addMovie(id, movies, title, plot, yearOfRelease))
                 cout << "Movie added successfully." << endl;
-            }
         }
         else if (choice == 3)
         {
-            cout << endl;
-            cout << "Enter a movie id: " << endl;
-
-            int idChoice;
-            cin >> idChoice;
-
-            if (cin.fail() || idChoice < 0) {
-                cout << "Invalid movie choice. Please try again." << endl;
-                continue;
-            }
-
-            Movie* movie = movies.getById(idChoice);
-            cout << "Enter an actor id: " << endl;
-
-            int idActorChoice;
-            cin >> idActorChoice;
-
-            if (cin.fail() || idActorChoice < 0) {
-                cout << "Invalid actor choice. Please try again." << endl;
-                continue;
-            }
-
-            admin->addActorToMovie(movie, actors.getById(idActorChoice));
+            int movieId = getValidIntInput("Enter a movie id: ");
+            int actorId = getValidIntInput("Enter an actor id: ");
+            admin->addActorToMovie(movies.getById(movieId), actors.getById(actorId));
         }
         else if (choice == 4)
         {
-            cout << endl;
-            cout << "Enter an actor id: " << endl;
-
-            int idChoice;
-            cin >> idChoice;
-
-            if (cin.fail() || idChoice < 0) {
-                cout << "Invalid choice. Returning to admin options." << endl;
-                continue;
-            }
-
-            Actor* actor = actors.getById(idChoice);
-            string newName;
-            int newYearOfBirth;
-
-            cout << "Enter new name: ";
-            cin.ignore();
-            getline(cin, newName);
-
-            cout << "Enter new year of birth: ";
-            cin >> newYearOfBirth;
-
-            admin->updateActor(actor, newName, newYearOfBirth);
+            int idChoice = getValidIntInput("Enter an actor id: ");
+            string newName = getValidStringInput("Enter new name: ");
+            int newYearOfBirth = getValidIntInput("Enter new year of birth: ", 1900);
+            admin->updateActor(actors.getById(idChoice), newName, newYearOfBirth);
         }
         else if (choice == 5)
         {
-            cout << endl;
-            cout << "Enter an actor id: " << endl;
-
-            int idChoice;
-            cin >> idChoice;
-
-            if (cin.fail() || idChoice < 0) {
-                cout << "Invalid movie choice. Returning to admin options." << endl;
-                continue;
-            }
-
-            Movie* movie = movies.getById(idChoice);
-            string newTitle, newPlot;
-            int newYearOfRelease;
-
-            cout << "Enter new title: ";
-            cin.ignore();
-            getline(cin, newTitle);
-
-            cout << "Enter new plot: ";
-            getline(cin, newPlot);
-
-            cout << "Enter new year of release: ";
-            cin >> newYearOfRelease;
-
-            admin->updateMovie(movie, newTitle, newPlot, newYearOfRelease);
-		}
-		else if (choice == 6)
-		{
-            cout << endl;
-            cout << "Enter an actor id: " << endl;
-
-            int idChoice;
-            cin >> idChoice;
-
-			if (cin.fail() || idChoice < 1) {
-				cout << "Invalid choice. Returning to admin options." << endl;
-				continue;
-			}
-			if (!admin->displayActorReports(actors.getById(idChoice))) {
-				cout << "No reports for this actor." << endl;
-				continue;
-			}
-			cout << "Select Report to view/resolve: " << endl;
-			int reportChoice;
-			cin >> reportChoice;
-			if (reportChoice < 1 || reportChoice > actors.getById(idChoice)->getReportList().getLength()) {
-				cout << "Invalid choice. Returning to admin options." << endl;
-				continue;
-			}
-			admin->displayActorReport(actors.getById(idChoice), actors.getById(idChoice)->getReportList().get(reportChoice - 1));
-			int resolveChoice;
-			while (true) {
-				cout << "1. Resolve Report" << endl;
-				cout << "2. Return to Admin Options" << endl;
-				cin >> resolveChoice;
-				if (resolveChoice == 1) {
-					actors.getById(idChoice)->getReportList().get(reportChoice - 1)->resolveReport();
-					cout << "Report resolved." << endl;
-					break;
-				}
-				else if (resolveChoice == 2) {
-					break; 
-				}
-				else {
-					cout << "Invalid choice. Please try again." << endl;
-                    cin.clear();
-					cin.ignore(numeric_limits<streamsize>::max(), '\n');
-				}
-			}
-		}
-		else if (choice == 7)
-		{
-            cout << endl;
-            cout << "Enter a movie id: " << endl;
-
-            int idChoice;
-            cin >> idChoice;
-
-            if (cin.fail() || idChoice < 0) {
-                cout << "Invalid movie choice. Please try again." << endl;
-                continue;
-            }
-
-			if (!admin->displayMovieReports(movies.getById(idChoice))) {
-				cout << "No reports for this movie." << endl;
-				continue;
-			}
-			cout << "Select Report to view/resolve: " << endl;
-			int reportChoice;
-			cin >> reportChoice;
-			if (reportChoice < 1 || reportChoice > movies.getById(idChoice)->getReportList().getLength()) {
-				cout << "Invalid choice. Returning to admin options." << endl;
-				continue;
-			}
-			admin->displayMovieReport(movies.getById(idChoice), movies.getById(idChoice)->getReportList().get(reportChoice - 1));
-			int resolveChoice;
-            while (true) {
-                cout << "1. Resolve Report" << endl;
-                cout << "2. Return to Admin Options" << endl;
-                cin >> resolveChoice;
-
-                if (resolveChoice == 1) {
-                    movies.getById(idChoice)->getReportList().get(reportChoice - 1)->resolveReport();
-                    cout << "Report resolved." << endl;
-                    break;
-                }
-                else if (resolveChoice == 2) {
-                    break;
-                }
-                else {
-                    cout << "Invalid choice. Please try again." << endl;
-                    cin.clear();
-                    cin.ignore(numeric_limits<streamsize>::max(), '\n');
-                }
-            }
-		}
-        else if (choice == 8) 
+            int idChoice = getValidIntInput("Enter a movie id: ");
+            string newTitle = getValidStringInput("Enter new title: ");
+            string newPlot = getValidStringInput("Enter new plot: ");
+            int newYearOfRelease = getValidIntInput("Enter new year of release: ", 1900);
+            admin->updateMovie(movies.getById(idChoice), newTitle, newPlot, newYearOfRelease);
+        }
+        else if (choice == 6)
+        {
+            int idChoice = getValidIntInput("Enter an actor id: ");
+            admin->displayActorReports(actors.getById(idChoice));
+        }
+        else if (choice == 7)
+        {
+            int idChoice = getValidIntInput("Enter a movie id: ");
+            admin->displayMovieReports(movies.getById(idChoice));
+        }
+        else if (choice == 8)
         {
             break;
         }
