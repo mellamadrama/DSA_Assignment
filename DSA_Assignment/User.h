@@ -31,6 +31,7 @@ public:
 	// Add a rating to a movie
 	// pre : rating is within a valid range
 	// post: rating is added to the movie's ratings list
+
 	void addMovieRating(Movie* movie, float rating);
 
 	void displayMovieRating(Movie* movie);

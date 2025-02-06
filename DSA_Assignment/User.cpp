@@ -81,7 +81,6 @@ void User::displayActorInRange(LinkedList<Actor*>& actors, int minAge, int maxAg
     }
 }
 
-
 void User::displayMoviesPast3Years(LinkedList<Movie*>& movies) {
     // Get the current year dynamically
     time_t t = time(nullptr); // Get current time
@@ -112,10 +111,12 @@ void User::displayMovieWithActor(Actor& actor) {
     LinkedList<Movie*>& movies = actor.getMovies();
     cout << "Movies featuring actor " << actor.getName() << ":" << endl;
 
-	movies.sort([](Movie* a, Movie* b) {
-		return a->getTitle() < b->getTitle();
-	});
+    // Sort the movies by title
+    movies.sort([](Movie* a, Movie* b) {
+        return a->getTitle() < b->getTitle();
+        });
 
+    // Print the sorted movies
     for (int i = 0; i < movies.getLength(); ++i) {
         Movie* movie = movies.get(i);
         if (movie) {
@@ -148,10 +149,10 @@ void User::displayActorConnections(Actor* actor) {
             LinkedList<Actor*>& actors = movie->getActors();
             for (int j = 0; j < actors.getLength(); ++j) {
                 Actor* connectedActor = actors.get(j);
-                if (connectedActor && connectedActor != actor) {
+                if (connectedActor && connectedActor->getId() != actor->getId()) {
                     cout << "- " << connectedActor->getName() << endl;
                 }
             }
         }
     }
-};
+}

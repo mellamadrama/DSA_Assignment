@@ -23,7 +23,7 @@ private:
 
     // Hash function to compute the index for a key
     int hashFunction(KeyType key) const {
-        return key % max_size;
+        return (key * 2654435761) % max_size;
     }
 
 public:
@@ -37,13 +37,15 @@ public:
     void insert(KeyType key, const ValueType& value);
 
     // Search a value by key
-    ValueType* search(KeyType key);
+    ValueType& search(KeyType key);
 
     // Remove a key-value pair from the hash table
     void remove(KeyType key);
 
     // Display the hash table
     void display() const;
+
+    void getCapacity();
 };
 
 // Constructor
@@ -55,7 +57,6 @@ HashTable<ValueType>::HashTable(int max_size) : max_size(max_size), size(0) {
 // Destructor
 template <typename ValueType>
 HashTable<ValueType>::~HashTable() {
-    cout << "Destructor called" << endl;
     for (int i = 0; i < max_size; ++i) {
         Node* current = table[i];
         while (current) {
@@ -71,60 +72,42 @@ HashTable<ValueType>::~HashTable() {
 template <typename ValueType>
 void HashTable<ValueType>::insert(KeyType key, const ValueType& value) {
     int index = hashFunction(key);
-    std::cout << "[DEBUG] Inserting key: " << key
-        << " at index: " << index
-        << " with value: " << value << std::endl;  // Assuming ValueType has getName()
-
     // Allocate new Node if table[index] is null
     if (table[index] == nullptr) {
         table[index] = new Node(key, value);
-        std::cout << "[DEBUG] Inserted as new node at index " << index
-            << " (no collision)" << std::endl;
     }
     else {
         Node* current = table[index];
-        std::cout << "[DEBUG] Collision detected at index " << index
-            << ", traversing linked list..." << std::endl;
 
         // Traverse the linked list to handle collisions
-        while (current != nullptr) {
-            std::cout << "[DEBUG] Checking node with key: " << current->key << std::endl;
-
+        while (current->next != nullptr) {
             // Update value if key already exists
             if (current->key == key) {
-                std::cout << "[DEBUG] Key " << key
-                    << " already exists, updating value to "
-                    << value << std::endl;
                 current->value = value;
                 return;
             }
-
-            // Move to the next node
-            if (current->next == nullptr) break;
             current = current->next;
         }
 
         // Add new node at the end of the linked list
         current->next = new Node(key, value);
-        std::cout << "[DEBUG] Appended new node with key: " << key
-            << " at index: " << index << std::endl;
     }
-
     size++;
-    std::cout << "[DEBUG] Hash table size is now: " << size << std::endl;
+
 }
 
 // Search a value by key
 template <typename ValueType>
-ValueType* HashTable<ValueType>::search(KeyType key) {
+ValueType& HashTable<ValueType>::search(KeyType key) {
     int index = hashFunction(key);
     Node* current = table[index];
-	cout << "Searching for key " << key << " at index " << index << endl;
+
     while (current != nullptr) {
-        return &current->value;
-        current = current->next;
+		if (current->key == key) {
+			return current->value;
+		}
+		current = current->next;
     }
-    return nullptr;
 }
 
 // Remove a key-value pair
@@ -149,4 +132,17 @@ void HashTable<ValueType>::remove(KeyType key) {
         prev = current;
         current = current->next;
     }
+}
+
+template <typename ValueType>
+void HashTable<ValueType>::getCapacity() {
+    int numElements = 0;
+    for (int i = 0; i < max_size; i++) {
+        Node* current = table[i];
+        while (current != nullptr) {
+            numElements += 1;
+			current = current->next;
+        }
+    }
+    cout << numElements << endl;
 }

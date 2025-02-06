@@ -12,8 +12,8 @@
 #include <string>
 using namespace std;
 
-HashTable<Actor*> actorTable(20000);
-HashTable<Movie*> movieTable(20000);
+HashTable<Actor*> actorTable(29989);
+HashTable<Movie*> movieTable(29989);
 template<>
 HashTable<Actor*>* hashTable<Actor*> = new HashTable<Actor*>(20000);
 
@@ -48,11 +48,11 @@ void loadCSVData(LinkedList<Actor*>& actors, LinkedList<Movie*>& movies, HashTab
             getline(ss, birth, ',');
 
             int actorId = stoi(id);
-            if (actorTable.search(actorId) == nullptr) {  // Only insert if actor doesn't exist
+            //if (actorTable.search(actorId) == nullptr) {  // Only insert if actor doesn't exist
                 Actor* actor = new Actor(actorId, name, stoi(birth), 0.0f);
 				actors.add(actor);
                 actorTable.insert(actorId, actor);
-            }
+            //}
         }
         actorsFile.close();
     }
@@ -95,6 +95,7 @@ void loadCSVData(LinkedList<Actor*>& actors, LinkedList<Movie*>& movies, HashTab
         cout << "Error opening movie file!" << endl;
     }
 
+
     if (castFile.is_open()) {
         string line;
         getline(castFile, line);  // Skip header
@@ -106,16 +107,8 @@ void loadCSVData(LinkedList<Actor*>& actors, LinkedList<Movie*>& movies, HashTab
             getline(ss, movieId, ',');
 
             // Find actor and movie by Id
-            Actor** actorPtr = actorTable.search(stol(actorId));
-            Actor* actor = actorPtr ? *actorPtr : nullptr;
-
-            Movie** moviePtr = movieTable.search(stol(movieId));
-            Movie* movie = moviePtr ? *moviePtr : nullptr;
-
-			cout << "Actor: " << stol(actorId) << " Movie: " << stol(movieId) << endl;
-
-			cout << "Movie: " << movie->getTitle() << " ID: " << movie->getId() << endl;
-			cout << "Actor: " << actor->getName() << " ID: " << actor->getId() << endl;
+            Actor* actor = actorTable.search(stol(actorId));
+            Movie* movie = movieTable.search(stol(movieId));
 
             // Link movie with actor
             if (actor && movie) {
@@ -164,6 +157,9 @@ int main()
     LinkedList<Movie*> movies;
 
     loadCSVData(actors, movies, actorTable, movieTable);
+
+    actorTable.getCapacity();
+    movieTable.getCapacity();
 
     // Initialize linked lists
     LinkedList<User*> userList = createUserList();
@@ -318,89 +314,69 @@ void userOptions(User* user, LinkedList<Actor*>& actors, LinkedList<Movie*>& mov
         else if (choice == 3)
         {
             cout << endl;
-            for (int i = 0; i < actors.getLength(); ++i)
-            {
-                Actor* actor = actors.get(i);
-                cout << i + 1 << "." << actor->getName() << endl;
-            }
-            cout << "Select an actor by index: ";
+            cout << "Enter an actor by actor id: ";
 
-            int actorChoice;
-            cin >> actorChoice;
-            while (cin.fail() || actorChoice < 1 || actorChoice > actors.getLength()) {
+            int idChoice;
+            cin >> idChoice;
+            while (cin.fail() || idChoice < 0) {
                 cin.clear();
                 cin.ignore(numeric_limits<streamsize>::max(), '\n');
                 cout << "Invalid choice. Please enter again: ";
-                cin >> actorChoice;
+                cin >> idChoice;
             }
 
             cout << endl;
-            user->displayMovieWithActor(*actors.get(actorChoice - 1));
+            user->displayMovieWithActor(*actors.getById(idChoice));
             cout << endl;
         }
         else if (choice == 4)
         {
             cout << endl;
-            for (int i = 0; i < movies.getLength(); ++i)
-            {
-                Movie* movie = movies.get(i);
-                cout << i + 1 << ". " << movie->getTitle() << endl;
-            }
-            cout << "Select a movie by index: ";
+            cout << "Enter a movie by movie id: ";
          
-            int movieChoice;
-            cin >> movieChoice;
-            while (cin.fail() || movieChoice < 1 || movieChoice > movies.getLength()) {
+            int idChoice;
+            cin >> idChoice;
+            while (cin.fail() || idChoice < 0) {
                 cin.clear();
                 cin.ignore(numeric_limits<streamsize>::max(), '\n');
                 cout << "Invalid choice. Please enter again: ";
-                cin >> movieChoice;
+                cin >> idChoice;
             }
 
             cout << endl;
-            user->displayAllActorsInMovie(movies.get(movieChoice - 1));
+            user->displayAllActorsInMovie(movies.getById(idChoice));
             cout << endl;
         }
         else if (choice == 5)
         {
             cout << endl;
-            for (int i = 0; i < actors.getLength(); ++i)
-            {
-                Actor* actor = actors.get(i);
-                cout << i + 1 << ". " << actor->getName() << endl;
-            }
-            cout << "Select an actor by index: ";
+            cout << "Enter an actor by actor id: ";
 
-            int actorChoice;
-            cin >> actorChoice;
-            while (cin.fail() || actorChoice < 1 || actorChoice > actors.getLength()) {
+            int idChoice;
+            cin >> idChoice;
+            while (cin.fail() || idChoice < 0) {
                 cin.clear();
                 cin.ignore(numeric_limits<streamsize>::max(), '\n');
                 cout << "Invalid choice. Please enter again: ";
-                cin >> actorChoice;
+                cin >> idChoice;
             }
 
             cout << endl;
-            user->displayActorConnections(actors.get(actorChoice - 1));
+            user->displayActorConnections(actors.getById(idChoice));
             cout << endl;
         }
         else if (choice == 6) 
         {
             cout << endl;
-            for (int i = 0; i < actors.getLength(); ++i)
-            {
-                Actor* actor = actors.get(i);
-                cout << i + 1 << ". " << actor->getName() << endl;
-            }
-			cout << "Select an actor to rate: ";
+			cout << "Enter an actor id to rate: ";
 
-			int actorChoice;
-			cin >> actorChoice;
-            while (cin.fail() || actorChoice < 1 || actorChoice > actors.getLength()) {
+			int idChoice;
+			cin >> idChoice;
+            while (cin.fail() || idChoice < 0) {
                 cin.clear();
                 cin.ignore(numeric_limits<streamsize>::max(), '\n');
                 cout << "Invalid choice. Please enter again: ";
-                cin >> actorChoice;
+                cin >> idChoice;
             }
 
             cout << endl;
@@ -413,24 +389,19 @@ void userOptions(User* user, LinkedList<Actor*>& actors, LinkedList<Movie*>& mov
 				cout << "Invalid rating. Must be between 0 and 5. Please enter again: ";
 				cin >> rating;
 			}
-			user->addActorRating(actors.get(actorChoice - 1), rating);
+			user->addActorRating(actors.getById(idChoice), rating);
             cout << endl;
-			user->displayActorRating(actors.get(actorChoice - 1));
+			user->displayActorRating(actors.getById(idChoice));
             cout << endl;
         }
         else if (choice == 7) 
         {
             cout << endl;
-            for (int i = 0; i < movies.getLength(); ++i)
-            {
-                Movie* movie = movies.get(i);
-                cout << i + 1 << ". " << movie->getTitle() << endl;
-            }
-			cout << "Select a movie to rate: ";
+			cout << "Enter a movie id to rate: ";
 
-            int movieChoice;
-            cin >> movieChoice;
-            while (cin.fail() || movieChoice < 1 || movieChoice > movies.getLength()) {
+            int idChoice;
+            cin >> idChoice;
+            while (cin.fail() || idChoice < 0) {
                 cin.clear();
                 cin.ignore(numeric_limits<streamsize>::max(), '\n');
                 cout << "Invalid choice. Please enter again: ";
@@ -448,9 +419,9 @@ void userOptions(User* user, LinkedList<Actor*>& actors, LinkedList<Movie*>& mov
                 cin >> rating;
             }
 
-			user->addMovieRating(movies.get(movieChoice - 1), rating);
+			user->addMovieRating(movies.getById(idChoice), rating);
             cout << endl;
-			user->displayMovieRating(movies.get(movieChoice - 1));
+			user->displayMovieRating(movies.getById(idChoice));
             cout << endl;
         }
         else if (choice == 8) 
@@ -469,20 +440,15 @@ void userOptions(User* user, LinkedList<Actor*>& actors, LinkedList<Movie*>& mov
         {
             cout << endl;
 			string userName = user->getName();
-            for (int i = 0; i < actors.getLength(); ++i)
-            {
-                Actor* actor = actors.get(i);
-                cout << i + 1 << ". " << actor->getName() << endl;
-            }
-			cout << "Select an actor by index: ";
+			cout << "Enter an actor id: ";
 
-			int actorChoice;
-			cin >> actorChoice;
-            while (cin.fail() || actorChoice < 1 || actorChoice > actors.getLength()) {
+			int idChoice;
+			cin >> idChoice;
+            while (cin.fail() || idChoice < 0) {
                 cin.clear();
                 cin.ignore(numeric_limits<streamsize>::max(), '\n');
                 cout << "Invalid choice. Please enter again: ";
-                cin >> actorChoice;
+                cin >> idChoice;
             }
 
             cout << endl;
@@ -491,7 +457,7 @@ void userOptions(User* user, LinkedList<Actor*>& actors, LinkedList<Movie*>& mov
 			cin.ignore();
 			getline(cin, reportDescription);
 			Report* report = new Report(userName, reportDescription);
-			user->addActorReport(actors.get(actorChoice - 1), report);
+			user->addActorReport(actors.getById(idChoice), report);
 			cout << "Report added successfully." << endl;
             cout << endl;
         }
@@ -499,20 +465,15 @@ void userOptions(User* user, LinkedList<Actor*>& actors, LinkedList<Movie*>& mov
         {
             cout << endl;
 			string userName = user->getName();
-            for (int i = 0; i < movies.getLength(); ++i)
-            {
-                Movie* movie = movies.get(i);
-                cout << i + 1 << ". " << movie->getTitle() << endl;
-            }
-			cout << "Select a movie by index: ";
+			cout << "Enter a movie id: ";
 
-			int movieChoice;
-			cin >> movieChoice;
-            while (cin.fail() || movieChoice < 1 || movieChoice > movies.getLength()) {
+			int idChoice;
+			cin >> idChoice;
+            while (cin.fail() || idChoice < 0) {
                 cin.clear();
                 cin.ignore(numeric_limits<streamsize>::max(), '\n');
                 cout << "Invalid choice. Please enter again: ";
-                cin >> movieChoice;
+                cin >> idChoice;
             }
 
             cout << endl;
@@ -521,7 +482,7 @@ void userOptions(User* user, LinkedList<Actor*>& actors, LinkedList<Movie*>& mov
 			cin.ignore();
 			getline(cin, reportDescription);
 			Report* report = new Report(userName, reportDescription);
-			user->addMovieReport(movies.get(movieChoice - 1), report);
+			user->addMovieReport(movies.getById(idChoice), report);
 			cout << "Report added successfully." << endl;
             cout << endl;
         }
@@ -535,6 +496,7 @@ void userOptions(User* user, LinkedList<Actor*>& actors, LinkedList<Movie*>& mov
 
 void adminOptions(Admin* admin, LinkedList<Actor*>& actors, LinkedList<Movie*>& movies)
 {
+    cout << endl;
     cout << "Welcome, Admin " << admin->getName() << "!" << endl;
     while (true)
     {
@@ -551,9 +513,11 @@ void adminOptions(Admin* admin, LinkedList<Actor*>& actors, LinkedList<Movie*>& 
         int choice;
         cin >> choice;
 
-        if (choice < 1 || choice > 8) {
-            cout << choice << endl;
-            cout << "Invalid option. Please try again." << endl;
+        if (cin.fail() || choice < 1 || choice > 8) {
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            cout << "Invalid option. Please try again" << endl;
+            cout << endl;
             continue;
         }
 
@@ -561,7 +525,7 @@ void adminOptions(Admin* admin, LinkedList<Actor*>& actors, LinkedList<Movie*>& 
         {
             string actorName;
             int yearOfBirth, id;
-\
+            cout << endl;
 			cout << "Enter Actor ID: ";
 			cin >> id;
 
@@ -604,56 +568,44 @@ void adminOptions(Admin* admin, LinkedList<Actor*>& actors, LinkedList<Movie*>& 
         }
         else if (choice == 3)
         {
-            cout << "Select a movie by index: " << endl;
-            for (int i = 0; i < movies.getLength(); ++i)
-            {
-                Movie* movie = movies.get(i);
-                cout << i + 1 << ". " << movie->getTitle() << endl;
-            }
+            cout << endl;
+            cout << "Enter a movie id: " << endl;
 
-            int movieChoice;
-            cin >> movieChoice;
+            int idChoice;
+            cin >> idChoice;
 
-            if (movieChoice < 1 || movieChoice > movies.getLength()) {
+            if (cin.fail() || idChoice < 0) {
                 cout << "Invalid movie choice. Please try again." << endl;
                 continue;
             }
 
-            Movie* movie = movies.get(movieChoice - 1);
-            cout << "Select an actor by index: " << endl;
-            for (int i = 0; i < actors.getLength(); ++i)
-            {
-                Actor* actor = actors.get(i);
-                cout << i + 1 << ". " << actor->getName() << endl;
-            }
+            Movie* movie = movies.getById(idChoice);
+            cout << "Enter an actor id: " << endl;
 
-            int actorChoice;
-            cin >> actorChoice;
+            int idActorChoice;
+            cin >> idActorChoice;
 
-            if (actorChoice < 1 || actorChoice > actors.getLength()) {
+            if (cin.fail() || idActorChoice < 0) {
                 cout << "Invalid actor choice. Please try again." << endl;
                 continue;
             }
 
-            admin->addActorToMovie(movie, actors.get(actorChoice - 1));
+            admin->addActorToMovie(movie, actors.getById(idActorChoice));
         }
         else if (choice == 4)
         {
-            cout << "Select an actor by index: " << endl;
-            for (int i = 0; i < actors.getLength(); ++i) {
-                Actor* actor = actors.get(i);
-                cout << i + 1 << ". " << actor->getName() << endl;
-            }
+            cout << endl;
+            cout << "Enter an actor id: " << endl;
 
-            int actorChoice;
-            cin >> actorChoice;
+            int idChoice;
+            cin >> idChoice;
 
-            if (actorChoice < 1 || actorChoice > actors.getLength()) {
+            if (cin.fail() || idChoice < 0) {
                 cout << "Invalid choice. Returning to admin options." << endl;
                 continue;
             }
 
-            Actor* actor = actors.get(actorChoice - 1);
+            Actor* actor = actors.getById(idChoice);
             string newName;
             int newYearOfBirth;
 
@@ -668,19 +620,18 @@ void adminOptions(Admin* admin, LinkedList<Actor*>& actors, LinkedList<Movie*>& 
         }
         else if (choice == 5)
         {
-            for (int i = 0; i < movies.getLength(); ++i) {
-                Movie* movie = movies.get(i);
-                cout << i + 1 << ". " << movie->getTitle() << endl;
-            }
-            int movieChoice;
-            cin >> movieChoice;
+            cout << endl;
+            cout << "Enter an actor id: " << endl;
 
-            if (movieChoice < 1 || movieChoice > movies.getLength()) {
+            int idChoice;
+            cin >> idChoice;
+
+            if (cin.fail() || idChoice < 0) {
                 cout << "Invalid movie choice. Returning to admin options." << endl;
                 continue;
             }
 
-            Movie* movie = movies.get(movieChoice - 1);
+            Movie* movie = movies.getById(idChoice);
             string newTitle, newPlot;
             int newYearOfRelease;
 
@@ -698,37 +649,35 @@ void adminOptions(Admin* admin, LinkedList<Actor*>& actors, LinkedList<Movie*>& 
 		}
 		else if (choice == 6)
 		{
-			cout << "Select an actor by index: " << endl;
-			for (int i = 0; i < actors.getLength(); ++i)
-			{
-				Actor* actor = actors.get(i);
-				cout << i + 1 << ". " << actor->getName() << endl;
-			}
-			int actorChoice;
-			cin >> actorChoice;
-			if (actorChoice < 1 || actorChoice > actors.getLength()) {
+            cout << endl;
+            cout << "Enter an actor id: " << endl;
+
+            int idChoice;
+            cin >> idChoice;
+
+			if (cin.fail() || idChoice < 1) {
 				cout << "Invalid choice. Returning to admin options." << endl;
 				continue;
 			}
-			if (!admin->displayActorReports(actors.get(actorChoice - 1))) {
+			if (!admin->displayActorReports(actors.getById(idChoice))) {
 				cout << "No reports for this actor." << endl;
 				continue;
 			}
 			cout << "Select Report to view/resolve: " << endl;
 			int reportChoice;
 			cin >> reportChoice;
-			if (reportChoice < 1 || reportChoice > actors.get(actorChoice - 1)->getReportList().getLength()) {
+			if (reportChoice < 1 || reportChoice > actors.getById(idChoice)->getReportList().getLength()) {
 				cout << "Invalid choice. Returning to admin options." << endl;
 				continue;
 			}
-			admin->displayActorReport(actors.get(actorChoice - 1), actors.get(actorChoice - 1)->getReportList().get(reportChoice - 1));
+			admin->displayActorReport(actors.getById(idChoice), actors.getById(idChoice)->getReportList().get(reportChoice - 1));
 			int resolveChoice;
 			while (true) {
 				cout << "1. Resolve Report" << endl;
 				cout << "2. Return to Admin Options" << endl;
 				cin >> resolveChoice;
 				if (resolveChoice == 1) {
-					actors.get(actorChoice - 1)->getReportList().get(reportChoice - 1)->resolveReport();
+					actors.getById(idChoice)->getReportList().get(reportChoice - 1)->resolveReport();
 					cout << "Report resolved." << endl;
 					break;
 				}
@@ -744,30 +693,29 @@ void adminOptions(Admin* admin, LinkedList<Actor*>& actors, LinkedList<Movie*>& 
 		}
 		else if (choice == 7)
 		{
-			cout << "Select a movie by index: " << endl;
-			for (int i = 0; i < movies.getLength(); ++i)
-			{
-				Movie* movie = movies.get(i);
-				cout << i + 1 << ". " << movie->getTitle() << endl;
-			}
-			int movieChoice;
-			cin >> movieChoice;
-			if (movieChoice < 1 || movieChoice > movies.getLength()) {
-				cout << "Invalid choice. Returning to admin options." << endl;
-				continue;
-			}
-			if (!admin->displayMovieReports(movies.get(movieChoice - 1))) {
+            cout << endl;
+            cout << "Enter a movie id: " << endl;
+
+            int idChoice;
+            cin >> idChoice;
+
+            if (cin.fail() || idChoice < 0) {
+                cout << "Invalid movie choice. Please try again." << endl;
+                continue;
+            }
+
+			if (!admin->displayMovieReports(movies.getById(idChoice))) {
 				cout << "No reports for this movie." << endl;
 				continue;
 			}
 			cout << "Select Report to view/resolve: " << endl;
 			int reportChoice;
 			cin >> reportChoice;
-			if (reportChoice < 1 || reportChoice > movies.get(movieChoice - 1)->getReportList().getLength()) {
+			if (reportChoice < 1 || reportChoice > movies.getById(idChoice)->getReportList().getLength()) {
 				cout << "Invalid choice. Returning to admin options." << endl;
 				continue;
 			}
-			admin->displayMovieReport(movies.get(movieChoice - 1), movies.get(movieChoice - 1)->getReportList().get(reportChoice - 1));
+			admin->displayMovieReport(movies.getById(idChoice), movies.getById(idChoice)->getReportList().get(reportChoice - 1));
 			int resolveChoice;
             while (true) {
                 cout << "1. Resolve Report" << endl;
@@ -775,7 +723,7 @@ void adminOptions(Admin* admin, LinkedList<Actor*>& actors, LinkedList<Movie*>& 
                 cin >> resolveChoice;
 
                 if (resolveChoice == 1) {
-                    movies.get(movieChoice - 1)->getReportList().get(reportChoice - 1)->resolveReport();
+                    movies.getById(idChoice)->getReportList().get(reportChoice - 1)->resolveReport();
                     cout << "Report resolved." << endl;
                     break;
                 }

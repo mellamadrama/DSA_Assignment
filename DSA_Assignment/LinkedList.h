@@ -46,7 +46,7 @@ public:
 	//       size of list is increased by 1
 	bool add(int index, T item);
 
-	bool contains(KeyType key);
+	bool contains(T& item);
 
 	// remove an item at a specified position in the list
 	// pre : 0 <= index < size
@@ -60,6 +60,8 @@ public:
 	// post: none
 	// return the item in the specified index of the list
 	T get(int index);
+
+	T getById(int id);
 
 	// check if the list is empty
 	// pre : none
@@ -158,16 +160,14 @@ template <typename T>
 bool LinkedList<T>::add(T item) {
 	Node* node = new Node;
 	node->item = item;
-	node->next = NULL;
+	node->next = nullptr;
 
-	if (size == 0)
-	{
+	if (size == 0) {
 		firstNode = node;
 	}
 	else {
 		Node* current = firstNode;
-		while (current->next != NULL)
-		{
+		while (current->next != nullptr) {
 			current = current->next;
 		}
 		current->next = node;
@@ -205,8 +205,15 @@ bool LinkedList<T>::add(int index, T item) {
 }
 
 template <typename T>
-bool LinkedList<T>::contains(KeyType key) {
-	return hashTable<T>->search(key);
+bool LinkedList<T>::contains(T& item)  {
+	Node* current = firstNode;
+	while (current != nullptr) {
+		if (current->item == item) {
+			return true;
+		}
+		current = current->next;
+	}
+	return false;
 }
 
 template <typename T>
@@ -244,6 +251,18 @@ T LinkedList<T>::get(int index) {
 		current = current->next;
 	}
 	return current->item;
+}
+
+template <typename T>
+T LinkedList<T>::getById(int id) {
+	Node* current = firstNode;
+	while (current != nullptr) {
+		if (current->item->getId() == id) {
+			return current->item;
+		}
+		current = current->next;
+	}
+	return T(); // Return a default-constructed object if not found
 }
 
 template <typename T>

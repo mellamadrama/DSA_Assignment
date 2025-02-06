@@ -66,7 +66,7 @@ float Movie::getMovieRating() {
 }
 
 void Movie::addActor(Actor* actor) {
-    if (!listOfActors.contains(actor->getId())) {
+    if (!listOfActors.contains(actor)) {
         listOfActors.add(actor);
         actor->addMovie(this);
         return;
@@ -74,7 +74,6 @@ void Movie::addActor(Actor* actor) {
 }
 
 void Movie::displayActors() {
-    cout << "Actors in the movie " << title << ":" << endl;
     if (listOfActors.isEmpty()) {
         cout << "No actors in this movie." << endl;
         return;
