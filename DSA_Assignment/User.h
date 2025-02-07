@@ -61,7 +61,7 @@ public:
 	// Display all actors in the range of rating
 	// pre : none
 	// post: prints the names of all actors in the range of rating
-    void displayMovieWithActor(Actor& actor);
+    void displayMovieWithActor(Actor* actor);
 
 	// Display all actors in the range of rating
 	// pre : none

@@ -182,9 +182,10 @@ bool LinkedList<T>::add(int index, T item) {
 	if (index < 0 || index > size) {
 		return false;
 	}
+
 	Node* newNode = new Node;
 	newNode->item = item;
-	newNode->next = NULL;
+	newNode->next = nullptr;
 
 	if (index == 0) {
 		newNode->next = firstNode;
@@ -197,11 +198,11 @@ bool LinkedList<T>::add(int index, T item) {
 		}
 		newNode->next = current->next;
 		current->next = newNode;
-		size++;
-		hashTable->insert(size, item);
-		return true;
 	}
-	return false;
+
+	size++;  
+	hashTable<T>->insert(size, item); 
+	return true;
 }
 
 template <typename T>

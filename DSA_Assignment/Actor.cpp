@@ -62,12 +62,17 @@ void Actor::addReport(Report* report) {
 
 void Actor::addMovie(Movie* movie) {
 	if (!listOfMovies.contains(movie)) {
-		//cout << "Adding " << name << " to " << movie->getTitle() << endl;
-		listOfMovies.add(movie);
-		cout << "Added " << name << " to " << movie->getTitle() << endl;
-		cout << listOfMovies.getLength() << endl;
-		movie->addActor(this);
-		return;
+		if (listOfMovies.isEmpty() || listOfMovies.get(0)->getTitle() > movie->getTitle()) {
+			listOfMovies.add(0, movie);
+		}
+		else {
+			for (int i = 0; i < listOfMovies.getLength(); ++i) {
+				if (listOfMovies.get(i)->getTitle() > movie->getTitle()) {
+					listOfMovies.add(i, movie);
+					return;
+				}
+			}
+		}
 	}
 }
 

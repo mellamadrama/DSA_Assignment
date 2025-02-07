@@ -11,6 +11,9 @@
 #include <sstream>
 #include <string>
 #include <cctype>
+#include <thread>
+#include <future>
+
 using namespace std;
 
 HashTable<Actor*> actorTable(29989);
@@ -88,61 +91,70 @@ void loadCSVData(LinkedList<Actor*>& actors, LinkedList<Movie*>& movies, HashTab
     ifstream moviesFile("movies.csv");
     ifstream castFile("cast.csv");
 
-    if (actorsFile.is_open()) {
-        string line;
-        getline(actorsFile, line);  // Skip header
-        while (getline(actorsFile, line)) {
-            stringstream ss(line);
-            string id, name, birth, rating;
-            getline(ss, id, ',');
-            getline(ss, name, ',');
-            getline(ss, birth, ',');
+    auto loadActors = [&]() {
+        if (actorsFile.is_open()) {
+            string line;
+            getline(actorsFile, line);  // Skip header
+            while (getline(actorsFile, line)) {
+                stringstream ss(line);
+                string id, name, birth, rating;
+                getline(ss, id, ',');
+                getline(ss, name, ',');
+                getline(ss, birth, ',');
 
-            int actorId = stoi(id);
-            Actor* actor = new Actor(actorId, name, stoi(birth), 0.0f);
-			actors.add(actor);
-            actorTable.insert(actorId, actor);
+                int actorId = stoi(id);
+                Actor* actor = new Actor(actorId, name, stoi(birth), 0.0f);
+                actors.add(actor);
+                actorTable.insert(actorId, actor);
+            }
+            actorsFile.close();
         }
-        actorsFile.close();
-    }
+    };
 
     // Load Movies
-    if (moviesFile.is_open()) {
-        string line;
-        getline(moviesFile, line);
+    auto loadMovies = [&]() {
+        if (moviesFile.is_open()) {
+            string line;
+            getline(moviesFile, line);  // Skip header
+            while (getline(moviesFile, line)) {
+                stringstream ss(line);
+                string id, title, plot, year, temp;
 
-        while (getline(moviesFile, line)) {
-            stringstream ss(line);
-            string id, title, plot, year, temp;
+                getline(ss, id, ',');
 
-            getline(ss, id, ',');
+                title = "";
+                while (getline(ss, temp, ',')) {
+                    if (ss.peek() == EOF) {
+                        year = temp;
+                        break;
+                    }
+                    if (plot.empty()) {
+                        plot = temp;
+                    }
+                    else {
+                        if (!title.empty()) title += ",";
+                        title += plot;
+                        plot = temp;
+                    }
+                }
 
-            title = "";
-            while (getline(ss, temp, ',')) {
-                if (ss.peek() == EOF) {
-                    year = temp;
-                    break;
-                }
-                if (plot.empty()) {
-                    plot = temp;
-                }
-                else {
-                    if (!title.empty()) title += ",";
-                    title += plot;
-                    plot = temp;
-                }
+                int movieId = stoi(id);
+                Movie* movie = new Movie(movieId, title, plot, stoi(year), 0.0f);
+				movies.add(movie);
+                movieTable.insert(movieId, movie);
             }
-
-            int movieId = stoi(id);
-			Movie* movie = new Movie(movieId, title, plot, stoi(year), 0.0f);
-			movies.add(movie);
-            movieTable.insert(movieId, movie);
+            moviesFile.close();
         }
-        moviesFile.close();
-    }
-    else {
-        cout << "Error opening movie file!" << endl;
-    }
+        else {
+            cout << "Error opening movie file!" << endl;
+        }
+    };
+
+    auto asyncActor = async(launch::async, loadActors);
+    auto asyncMovie = async(launch::async, loadMovies);
+
+    asyncActor.get();
+    asyncMovie.get();
 
 
     if (castFile.is_open()) {
@@ -206,9 +218,6 @@ int main()
     LinkedList<Movie*> movies;
 
     loadCSVData(actors, movies, actorTable, movieTable);
-
-    actorTable.getCapacity();
-    movieTable.getCapacity();
 
     // Initialize linked lists
     LinkedList<User*> userList = createUserList();
@@ -330,7 +339,7 @@ void userOptions(User* user, LinkedList<Actor*>& actors, LinkedList<Movie*>& mov
             cout << endl;
             int idChoice = getValidIntInput("Enter an actor by actor id: ");
             cout << endl;
-            user->displayMovieWithActor(*actors.getById(idChoice));
+            user->displayMovieWithActor(actors.getById(idChoice));
             cout << endl;
         }
         else if (choice == 4)

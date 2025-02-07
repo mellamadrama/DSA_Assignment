@@ -41,11 +41,6 @@ public:
 
     // Remove a key-value pair from the hash table
     void remove(KeyType key);
-
-    // Display the hash table
-    void display() const;
-
-    void getCapacity();
 };
 
 // Constructor
@@ -132,17 +127,4 @@ void HashTable<ValueType>::remove(KeyType key) {
         prev = current;
         current = current->next;
     }
-}
-
-template <typename ValueType>
-void HashTable<ValueType>::getCapacity() {
-    int numElements = 0;
-    for (int i = 0; i < max_size; i++) {
-        Node* current = table[i];
-        while (current != nullptr) {
-            numElements += 1;
-			current = current->next;
-        }
-    }
-    cout << numElements << endl;
 }

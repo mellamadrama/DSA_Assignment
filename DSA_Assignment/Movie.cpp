@@ -66,11 +66,19 @@ float Movie::getMovieRating() {
 }
 
 void Movie::addActor(Actor* actor) {
-    if (!listOfActors.contains(actor)) {
-        listOfActors.add(actor);
-        actor->addMovie(this);
-        return;
-    }
+	if (!listOfActors.contains(actor)) {
+        if (listOfActors.isEmpty() || listOfActors.get(0)->getName() > actor->getName()) {
+            listOfActors.add(actor);
+        }
+        else {
+            for (int i = 0; i < listOfActors.getLength(); ++i) {
+                if (listOfActors.get(i)->getName() > actor->getName()) {
+                    listOfActors.add(i, actor);
+                    break;
+                }
+            }
+        }
+	}
 }
 
 void Movie::displayActors() {
@@ -79,10 +87,7 @@ void Movie::displayActors() {
         return;
     }
 
-	listOfActors.sort([](Actor* a, Actor* b) {
-		return a->getName() < b->getName();
-	});
-
+    cout << "Actors in the movie " << title << ":" << endl;
     for (int i = 0; i < listOfActors.getLength(); ++i) {
         cout << "- " << listOfActors.get(i)->getName() << endl;
     }

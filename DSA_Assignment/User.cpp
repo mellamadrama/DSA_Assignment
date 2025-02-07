@@ -2,6 +2,7 @@
 #include <string>
 #include "User.h"
 #include <ctime>
+#include <iomanip>
 using namespace std;
 
 // Constructor
@@ -73,73 +74,72 @@ void User::displayActorInRange(LinkedList<Actor*>& actors, int minAge, int maxAg
         return a->getAge() < b->getAge();
     });
 
-    //Display the sorted actors
+    // Display the sorted actors
     cout << "Actors in the age range [" << minAge << ", " << maxAge << "] in ascending order of age:" << endl;
     for (int i = 0; i < filteredActors.getLength(); ++i) {
         Actor* actor = filteredActors.get(i);
-        cout << "- " << actor->getName() << " (Age: " << actor->getAge() << ")" << endl;
+        cout << "- " << setw(25) << left << actor->getName() << " (Age: " << actor->getAge() << ")" << endl;
     }
 }
 
 void User::displayMoviesPast3Years(LinkedList<Movie*>& movies) {
-    // Get the current year dynamically
+    LinkedList<Movie*> filteredMovies;
+
     time_t t = time(nullptr); // Get current time
     tm now;
     localtime_s(&now, &t);// Convert to local time
     int currentYear = now.tm_year + 1900; // tm_year is years since 1900
 
-	movies.sort([](Movie* a, Movie* b) {
-		return a->getYearOfRelease() < b->getYearOfRelease();
-	});
-
-    cout << "Movies released in the past 3 years:" << endl;
+    // Filter movies released in the past 3 years
     for (int i = 0; i < movies.getLength(); ++i) {
         Movie* movie = movies.get(i);
         if (movie) {
             int releaseYear = movie->getYearOfRelease();
             if (releaseYear >= currentYear - 3 && releaseYear <= currentYear) {
-                cout << "- " << movie->getTitle()
-                    << " (Year: " << releaseYear
-                    << ", Rating: " << movie->getMovieRating() << ")"
-                    << endl;
+                filteredMovies.add(movie);
             }
         }
     }
-}
 
-void User::displayMovieWithActor(Actor& actor) {
-    LinkedList<Movie*>& movies = actor.getMovies();
-    cout << "Movies featuring actor " << actor.getName() << ":" << endl;
-
-    // Sort the movies by title
-    movies.sort([](Movie* a, Movie* b) {
-        return a->getTitle() < b->getTitle();
+    // Sort the filtered movies by year of release
+    filteredMovies.sort([](Movie* a, Movie* b) {
+        return a->getYearOfRelease() < b->getYearOfRelease();
         });
 
-    // Print the sorted movies
-    for (int i = 0; i < movies.getLength(); ++i) {
-        Movie* movie = movies.get(i);
-        if (movie) {
-            cout << "- " << movie->getTitle() << endl;
-        }
+    // Display the sorted movies
+    cout << "Movies released in the past 3 years:" << endl;
+    for (int i = 0; i < filteredMovies.getLength(); ++i) {
+        Movie* movie = filteredMovies.get(i);
+        cout << "- " << setw(40) << left << movie->getTitle()
+            << " (Year: " << movie->getYearOfRelease()
+            << ", Rating: " << fixed << setprecision(1) << movie->getMovieRating() << ")"
+            << endl;
     }
+}
+
+void User::displayMovieWithActor(Actor* actor) {
+	if (!actor) {
+		cout << "Actor not found." << endl;
+		return;
+	}
+
+    actor->displayMovies();
 }
 
 void User::displayAllActorsInMovie(Movie* movie) {
-    if (!movie) {
-        cout << "Invalid movie provided." << endl;
-        return;
-    }
+	if (!movie) {
+		cout << "Movie not found." << endl;
+		return;
+	}
 
-    cout << "Actors in the movie " << movie->getTitle() << ":" << endl;
     movie->displayActors();
 }
 
 void User::displayActorConnections(Actor* actor) {
-    if (!actor) {
-        cout << "Invalid actor provided." << endl;
-        return;
-    }
+	if (!actor) {
+		cout << "Actor not found." << endl;
+		return;
+	}
 
     cout << "Actors connected to \"" << actor->getName() << "\":" << endl;
     LinkedList<Movie*>& movies = actor->getMovies();
