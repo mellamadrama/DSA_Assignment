@@ -10,6 +10,7 @@
 #include <fstream>
 #include <sstream>
 #include <string>
+#include <cctype>
 using namespace std;
 
 HashTable<Actor*> actorTable(29989);
@@ -44,7 +45,7 @@ int getValidIntInput(const string& prompt, int minValue = 0) {
         cin >> input;
         if (cin.fail() || input < minValue) {
             clearInputStream();
-            cout << "Invalid input. Please try again." << endl;
+            cout << "Invalid input. Please enter a value above " << minValue << endl;
         }
         else {
             return input;
@@ -69,10 +70,17 @@ float getValidFloatInput(const string& prompt, float minValue = 0.0f, float maxV
 
 string getValidStringInput(const string& prompt) {
     string input;
-    cout << prompt;
-    cin.ignore();
-    getline(cin, input);
-    return input;
+	while (true) {
+		cout << prompt;
+		cin.ignore();
+		getline(cin, input);
+		if (input.empty()) {
+			cout << "Invalid input. Please try again." << endl;
+		}
+		else {
+			return input;
+		}
+	}
 }
 
 void loadCSVData(LinkedList<Actor*>& actors, LinkedList<Movie*>& movies, HashTable<Actor*>& actorTable, HashTable<Movie*>& movieTable){
@@ -91,11 +99,9 @@ void loadCSVData(LinkedList<Actor*>& actors, LinkedList<Movie*>& movies, HashTab
             getline(ss, birth, ',');
 
             int actorId = stoi(id);
-            //if (actorTable.search(actorId) == nullptr) {  // Only insert if actor doesn't exist
-                Actor* actor = new Actor(actorId, name, stoi(birth), 0.0f);
-				actors.add(actor);
-                actorTable.insert(actorId, actor);
-            //}
+            Actor* actor = new Actor(actorId, name, stoi(birth), 0.0f);
+			actors.add(actor);
+            actorTable.insert(actorId, actor);
         }
         actorsFile.close();
     }
@@ -150,8 +156,8 @@ void loadCSVData(LinkedList<Actor*>& actors, LinkedList<Movie*>& movies, HashTab
             getline(ss, movieId, ',');
 
             // Find actor and movie by Id
-            Actor* actor = actorTable.search(stol(actorId));
-            Movie* movie = movieTable.search(stol(movieId));
+            Actor* actor = actorTable.search(stoi(actorId));
+            Movie* movie = movieTable.search(stoi(movieId));
 
             // Link movie with actor
             if (actor && movie) {
@@ -215,16 +221,18 @@ int main()
 
         if (choice == 1)
         {
-            cout << endl;
-            cout << "Enter your full name: ";
-            cin.ignore();
-            string fullName;
-            getline(cin, fullName);
-
+            string fullName = getValidStringInput("Enter your full name: ");
             User* selectedUser = nullptr;
             for (int i = 0; i < userList.getLength(); ++i) 
             {
-                if (userList.get(i)->getName() == fullName) 
+				string listName = userList.get(i)->getName();
+                for (char& fullNameLower : fullName) {
+                    fullNameLower = tolower(fullNameLower);
+                }
+				for (char& listNameLower : listName) {
+					listNameLower = tolower(listNameLower);
+				}
+                if (listName == fullName )
                 {
                     selectedUser = userList.get(i);
                     break;
@@ -428,7 +436,7 @@ void adminOptions(Admin* admin, LinkedList<Actor*>& actors, LinkedList<Movie*>& 
             cout << endl;
             int id = getValidIntInput("Enter Actor ID: ");
             string actorName = getValidStringInput("Enter actor name: ");
-            int yearOfBirth = getValidIntInput("Enter year of birth: ", 1900);
+            int yearOfBirth = getValidIntInput("Enter year of birth: ");
             if (admin->addActor(id, actors, actorName, yearOfBirth))
                 cout << "Actor added successfully." << endl;
         }
@@ -437,7 +445,7 @@ void adminOptions(Admin* admin, LinkedList<Actor*>& actors, LinkedList<Movie*>& 
             int id = getValidIntInput("Enter Movie ID: ");
             string title = getValidStringInput("Enter movie title: ");
             string plot = getValidStringInput("Enter plot: ");
-            int yearOfRelease = getValidIntInput("Enter year of release: ", 1900);
+            int yearOfRelease = getValidIntInput("Enter year of release: ");
             if (admin->addMovie(id, movies, title, plot, yearOfRelease))
                 cout << "Movie added successfully." << endl;
         }
@@ -451,7 +459,7 @@ void adminOptions(Admin* admin, LinkedList<Actor*>& actors, LinkedList<Movie*>& 
         {
             int idChoice = getValidIntInput("Enter an actor id: ");
             string newName = getValidStringInput("Enter new name: ");
-            int newYearOfBirth = getValidIntInput("Enter new year of birth: ", 1900);
+            int newYearOfBirth = getValidIntInput("Enter new year of birth: ");
             admin->updateActor(actors.getById(idChoice), newName, newYearOfBirth);
         }
         else if (choice == 5)
@@ -459,7 +467,7 @@ void adminOptions(Admin* admin, LinkedList<Actor*>& actors, LinkedList<Movie*>& 
             int idChoice = getValidIntInput("Enter a movie id: ");
             string newTitle = getValidStringInput("Enter new title: ");
             string newPlot = getValidStringInput("Enter new plot: ");
-            int newYearOfRelease = getValidIntInput("Enter new year of release: ", 1900);
+            int newYearOfRelease = getValidIntInput("Enter new year of release: ");
             admin->updateMovie(movies.getById(idChoice), newTitle, newPlot, newYearOfRelease);
         }
         else if (choice == 6)
