@@ -50,7 +50,6 @@ void User::addActorRating(Actor* actor, float rating) {
 
 void User::displayActorRating(Actor* actor) {
 	if (!actor) {
-		cout << "Actor not found." << endl;
 		return;
 	}
 

@@ -29,10 +29,6 @@ int Admin::getAdminId() {
 bool Admin::addActor(int id, LinkedList<Actor*>& actors, string& actorName, int yearOfBirth) {
     for (int i = 0; i < actors.getLength(); ++i) {
         Actor* actor = actors.get(i);
-        if (actor->getName() == actorName) {
-            cout << "Actor " << actorName << " already exists in the system." << endl;
-			return false;
-        }
     }
 
     Actor* newActor = new Actor(id, actorName, yearOfBirth, 0.0f);
