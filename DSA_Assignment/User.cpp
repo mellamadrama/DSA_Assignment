@@ -12,10 +12,20 @@ User::User(string name, int userId) {
 }
 
 void User::addMovieRating(Movie* movie, float rating) {
+	if (!movie) {
+		cout << "Movie not found." << endl;
+		return;
+	}
+
 	movie->addRating(rating);
 }
 
 void User::displayMovieRating(Movie* movie) {
+	if (!movie) {
+		cout << "Movie not found." << endl;
+		return;
+	}
+
 	cout << "Average Rating: " << movie->getMovieRating() << endl;
 }
 
@@ -30,10 +40,20 @@ void User::displayMovieRecommendation(LinkedList<Movie*>& movies) {
 }
 
 void User::addActorRating(Actor* actor, float rating) {
+	if (!actor) {
+		cout << "Actor not found." << endl;
+		return;
+	}
+
 	actor->addRating(rating);
 }
 
 void User::displayActorRating(Actor* actor) {
+	if (!actor) {
+		cout << "Actor not found." << endl;
+		return;
+	}
+
 	cout << "Average Rating: " << actor->getActorRating() << endl;
 }
 
@@ -48,10 +68,20 @@ void User::displayActorRecommendation(LinkedList<Actor*>& actors) {
 }
 
 void User::addMovieReport(Movie* movie, Report* report) {
+	if (!movie) {
+		cout << "Movie not found." << endl;
+		return;
+	}
+
 	movie->addReport(report);
 }
 
 void User::addActorReport(Actor* actor, Report* report) {
+	if (!actor) {
+		cout << "Actor not found." << endl;
+		return;
+	}
+
 	actor->addReport(report);
 }
 

@@ -1,3 +1,8 @@
+/*
+* Name: Hervin Sie(S10262115C), Charlotte Lee(s10258027k)
+* Group: 6
+*/
+
 #pragma once
 #include <string>
 #include "LinkedList.h"
@@ -52,14 +57,25 @@ public:
 	// post: returns the rating of the actor
     float getActorRating();
 
+	// List all reports for the actor
+	// pre : none
+	// post: prints all reports for the actor
     bool listReports();
 
+	// Display a report
+	// pre : none
+	// post: prints the details of the report
     void displayReport(Report* report);
 
+	// Add a report to the actor
+	// pre : none
+	// post: report is added to the list of reports
     void addReport(Report* report);
 
+	// Get the list of reports for the actor
+	// pre : none
+	// post: returns a reference to the list of reports
 	LinkedList<Report*>& getReportList();
-
 
     // Add a movie to the actor's list of movies
     // pre : movie is a valid Movie object

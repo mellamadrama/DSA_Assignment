@@ -1,3 +1,8 @@
+/*
+* Name: Hervin Sie(S10262115C), Charlotte Lee(s10258027k)
+* Group: 6
+*/
+
 #pragma once
 
 #include "HashTable.h"

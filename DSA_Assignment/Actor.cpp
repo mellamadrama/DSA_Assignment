@@ -91,9 +91,6 @@ int Actor::getAge() {
 	return 2025 - yearOfBirth;
 }
 
-// Update the actor's details
-// pre: newName is a valid string, newYearOfBirth is a positive integer
-// post: updates the name and year of birth of the actor
 void Actor::updateActorDetails(string& newName, int newYearOfBirth) {
 	if (newName.empty() || newYearOfBirth <= 0) {
 		cout << "Invalid details provided. Update failed." << endl;
@@ -108,9 +105,6 @@ void Actor::updateActorDetails(string& newName, int newYearOfBirth) {
 	cout << "Actor details updated: Name = " << name << ", Year of Birth = " << yearOfBirth << endl;
 }
 
-// Get the list of movies the actor has acted in
-// pre : The Actor object must be properly initialized.
-// post: Returns a constant reference to the vector containing pointers to the movies the actor is associated with.
 LinkedList<Movie*>& Actor::getMovies() {
     return listOfMovies;
 }

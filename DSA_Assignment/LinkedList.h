@@ -1,3 +1,8 @@
+/*
+* Name: Hervin Sie(S10262115C), Charlotte Lee(s10258027k)
+* Group: 6
+*/
+
 #pragma once
 #include <iostream>
 #include "HashTable.h"
@@ -46,6 +51,10 @@ public:
 	//       size of list is increased by 1
 	bool add(int index, T item);
 
+	// check if the list contains an item
+	// pre : none
+	// post: none
+	// return true if the list contains the item; otherwise returns false
 	bool contains(T& item);
 
 	// remove an item at a specified position in the list
@@ -61,6 +70,10 @@ public:
 	// return the item in the specified index of the list
 	T get(int index);
 
+	// get an item by id
+	// pre : none
+	// post: none
+	// return the item with the specified id
 	T getById(int id);
 
 	// check if the list is empty

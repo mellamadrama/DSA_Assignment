@@ -104,7 +104,7 @@ void loadCSVData(LinkedList<Actor*>& actors, LinkedList<Movie*>& movies, HashTab
 
                 int actorId = stoi(id);
                 Actor* actor = new Actor(actorId, name, stoi(birth), 0.0f);
-                actors.add(actor);
+				actors.add(actor);
                 actorTable.insert(actorId, actor);
             }
             actorsFile.close();

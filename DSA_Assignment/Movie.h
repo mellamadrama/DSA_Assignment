@@ -1,5 +1,9 @@
-#pragma once
+/*
+* Name: Hervin Sie(S10262115C), Charlotte Lee(s10258027k)
+* Group: 6
+*/
 
+#pragma once
 #include <string>
 #include "LinkedList.h"
 #include "Global.h"
@@ -49,12 +53,25 @@ public:
     // post: returns the plot of the movie
     string getPlot();
 
+	// List all reports for the movie
+	// pre : none
+	// post: prints all reports for the movie
+	// return true if there are reports; otherwise returns false
 	bool listReports();
 
+	// Display a report
+	// pre : report is a valid Report object
+	// post: prints the details of the report
 	void displayReport(Report* report);
 
+	// Add a report to the movie
+	// pre : report is a valid Report object
+	// post: report is added to the list of reports
 	void addReport(Report* report);
 
+	// Get the list of reports for the movie
+	// pre : none
+	// post: returns a reference to the list of reports
 	LinkedList<Report*>& getReportList();
 
     // Get the year of release of the movie
