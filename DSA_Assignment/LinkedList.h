@@ -31,7 +31,7 @@ private:
 	Node* split(Node* head);
 
 public:
-	LinkedList();			// constructor
+	LinkedList();		// constructor
 
     ~LinkedList();		// destructor
 
