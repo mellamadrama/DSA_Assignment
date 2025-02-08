@@ -106,7 +106,6 @@ LinkedList<T>::~LinkedList() {
 	while (!isEmpty()) {
 		remove(0);
 	}
-	delete hashTable<T>;
 }
 
 // Merge two sorted linked lists

@@ -27,7 +27,7 @@ private:
 
     // Hash function to compute the index for a key
     int hashFunction(KeyType key) const {
-        return (key * 2654435761) % max_size;
+        return key % max_size;
     }
 
 public:
@@ -49,8 +49,13 @@ public:
 
 // Constructor
 template <typename ValueType>
-HashTable<ValueType>::HashTable(int max_size) : max_size(max_size), size(0) {
-    table = new Node * [max_size]();  // Initialize all pointers to nullptr
+HashTable<ValueType>::HashTable(int size) {
+    table = new Node * [size];
+    for (int i = 0; i < size; ++i) {
+        table[i] = nullptr;
+    }
+    max_size = size;
+    this->size = 0;
 }
 
 // Destructor
