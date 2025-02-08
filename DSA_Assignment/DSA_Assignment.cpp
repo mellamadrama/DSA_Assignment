@@ -41,14 +41,15 @@ void clearInputStream() {
     cin.ignore(numeric_limits<streamsize>::max(), '\n');
 }
 
-long getValidIntInput(const string& prompt, int minValue = 0) {
-    long input;
+int getValidIntInput(const string& prompt, int minValue = 0) {
+    int input;
+    string line;
     while (true) {
         cout << prompt;
-        cin >> input;
-        if (cin.fail() || input < minValue) {
-            clearInputStream();
-            cout << "Invalid input. Please enter a value equal or above " << minValue << endl;
+        getline(cin, line);
+        istringstream iss(line);
+        if (!(iss >> input) || !(iss.eof()) || input < minValue) {
+            cout << "Invalid input. Please enter a value equal to or above: " << minValue << endl;
         }
         else {
             return input;
@@ -73,18 +74,16 @@ float getValidFloatInput(const string& prompt, float minValue = 0.0f, float maxV
 
 string getValidStringInput(const string& prompt) {
     string input;
-	while (true) {
-		cout << prompt;
-		cin.ignore();
-		getline(cin, input);
-		if (input.empty()) {
-			cout << "Invalid input. Please try again." << endl;
-			cout << endl;
-		}
-		else {
-			return input;
-		}
-	}
+    while (true) {
+        cout << prompt;
+        getline(cin, input);
+        if (input.empty()) {
+            cout << "Invalid input. Please try again." << endl;
+        }
+        else {
+            return input;
+        }
+    }
 }
 
 void loadCSVData(LinkedList<Actor*>& actors, LinkedList<Movie*>& movies, HashTable<Actor*>& actorTable, HashTable<Movie*>& movieTable){
