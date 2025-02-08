@@ -403,7 +403,6 @@ void userOptions(User* user, LinkedList<Actor*>& actors, LinkedList<Movie*>& mov
             string reportDescription = getValidStringInput("Enter report description: ");
             Report* report = new Report(user->getName(), reportDescription);
             user->addActorReport(actors.getById(idChoice), report);
-            cout << "Report added successfully." << endl;
             cout << endl;
         }
         else if (choice == 11)
@@ -413,7 +412,6 @@ void userOptions(User* user, LinkedList<Actor*>& actors, LinkedList<Movie*>& mov
             string reportDescription = getValidStringInput("Enter report description: ");
             Report* report = new Report(user->getName(), reportDescription);
             user->addMovieReport(movies.getById(idChoice), report);
-            cout << "Report added successfully." << endl;
             cout << endl;
         }
         else if (choice == 12)

@@ -72,6 +72,7 @@ void User::addMovieReport(Movie* movie, Report* report) {
 	}
 
 	movie->addReport(report);
+    cout << "Report added successfully." << endl;
 }
 
 void User::addActorReport(Actor* actor, Report* report) {
@@ -81,6 +82,7 @@ void User::addActorReport(Actor* actor, Report* report) {
 	}
 
 	actor->addReport(report);
+    cout << "Report added successfully." << endl;
 }
 
 void User::displayActorInRange(LinkedList<Actor*>& actors, int minAge, int maxAge) {
