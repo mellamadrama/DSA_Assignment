@@ -41,14 +41,14 @@ void clearInputStream() {
     cin.ignore(numeric_limits<streamsize>::max(), '\n');
 }
 
-int getValidIntInput(const string& prompt, int minValue = 0) {
-    int input;
+long getValidIntInput(const string& prompt, int minValue = 0) {
+    long input;
     while (true) {
         cout << prompt;
         cin >> input;
         if (cin.fail() || input < minValue) {
             clearInputStream();
-            cout << "Invalid input. Please enter a value above " << minValue << endl;
+            cout << "Invalid input. Please enter a value equal or above " << minValue << endl;
         }
         else {
             return input;
@@ -79,6 +79,7 @@ string getValidStringInput(const string& prompt) {
 		getline(cin, input);
 		if (input.empty()) {
 			cout << "Invalid input. Please try again." << endl;
+			cout << endl;
 		}
 		else {
 			return input;
@@ -321,7 +322,8 @@ void userOptions(User* user, LinkedList<Actor*>& actors, LinkedList<Movie*>& mov
         int choice = getValidIntInput("Select an option: ", 1);
 		if (choice < 1 || choice > 12)
 		{
-			cout << "Invalid choice. Please try again." << endl;
+			cout << "Invalid choice. Please try again between 1-12." << endl;
+			cout << endl;
 			continue;
 		}
 
@@ -440,7 +442,8 @@ void adminOptions(Admin* admin, LinkedList<Actor*>& actors, LinkedList<Movie*>& 
         int choice = getValidIntInput("Select an option: ", 1);
 		if (choice < 1 || choice > 8)
 		{
-			cout << "Invalid choice. Please try again." << endl;
+			cout << "Invalid choice. Please try again between 1-8." << endl;
+			cout << endl;
 			continue;
 		}
 
