@@ -3,29 +3,19 @@
 #include "Admin.h"
 using namespace std;
 
-// Constructor
 Admin::Admin(string name, int adminId) {
     this->name = name;
     this->adminId = adminId;
 }
 
-// Get the name of the admin
-// pre: none
-// post: returns the name of the admin
 string Admin::getName() {
     return name;
 }
 
-// Get the admin ID
-// pre: none
-// post: returns the admin ID
 int Admin::getAdminId() {
     return adminId;
 }
 
-// Add a new actor to the list
-// pre: actorName is a valid string, yearOfBirth is a positive integer
-// post: new actor is added to the vector; if actor already exists, no changes are made
 bool Admin::addActor(int id, LinkedList<Actor*>& actors, string& actorName, int yearOfBirth) {
     for (int i = 0; i < actors.getLength(); ++i) {
         Actor* actor = actors.get(i);

@@ -3,9 +3,6 @@
 #include "Global.h"
 using namespace std;
 
-// Constructor
-// pre: title and plot are valid strings, yearOfRelease is a positive integer, initialRating is within a valid range
-// post: Movie object is initialized with the given attributes
 Movie::Movie(int id, string& title, string& plot, int yearOfRelease, float initialRating)
 	: id(id), title(title), plot(plot), yearOfRelease(yearOfRelease), avgMovieRating(initialRating) {
 }
