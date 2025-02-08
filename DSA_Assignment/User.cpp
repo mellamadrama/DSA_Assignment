@@ -5,7 +5,6 @@
 #include <iomanip>
 using namespace std;
 
-// Constructor
 User::User(string name, int userId) {
     this->name = name;
     this->userId = userId;
