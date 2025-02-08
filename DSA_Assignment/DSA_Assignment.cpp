@@ -264,7 +264,14 @@ int main()
             Admin* selectedAdmin = nullptr;
             for (int i = 0; i < adminList.getLength(); ++i)
             {
-                if (adminList.get(i)->getName() == fullName)
+                string listName = adminList.get(i)->getName();
+                for (char& fullNameLower : fullName) {
+                    fullNameLower = tolower(fullNameLower);
+                }
+                for (char& listNameLower : listName) {
+                    listNameLower = tolower(listNameLower);
+				}
+                if (listName == fullName)
                 {
                     selectedAdmin = adminList.get(i);
                     break;
