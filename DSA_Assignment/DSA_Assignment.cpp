@@ -13,6 +13,7 @@
 #include <cctype>
 #include <thread>
 #include <future>
+#include <algorithm>
 
 using namespace std;
 
@@ -43,11 +44,12 @@ void clearInputStream() {
 
 int getValidIntInput(const string& prompt, int minValue = 0) {
     int input;
+    string line;
     while (true) {
         cout << prompt;
-        cin >> input;
-        if (cin.fail() || input < minValue) {
-            clearInputStream();
+        getline(cin, line);
+        istringstream iss(line);
+        if (!(iss >> input) || !(iss.eof()) || input < minValue) {
             cout << "Invalid input. Please enter a value above " << minValue << endl;
         }
         else {
@@ -73,17 +75,16 @@ float getValidFloatInput(const string& prompt, float minValue = 0.0f, float maxV
 
 string getValidStringInput(const string& prompt) {
     string input;
-	while (true) {
-		cout << prompt;
-		cin.ignore();
-		getline(cin, input);
-		if (input.empty()) {
-			cout << "Invalid input. Please try again." << endl;
-		}
-		else {
-			return input;
-		}
-	}
+    while (true) {
+        cout << prompt;
+        getline(cin, input);
+        if (input.empty() || !all_of(input.begin(), input.end(), [](char c) { return isalpha(c) || isspace(c); })) {
+            cout << "Invalid input. Please enter alphabetic characters only." << endl;
+        }
+        else {
+            return input;
+        }
+    }
 }
 
 void loadCSVData(LinkedList<Actor*>& actors, LinkedList<Movie*>& movies, HashTable<Actor*>& actorTable, HashTable<Movie*>& movieTable){
@@ -438,11 +439,6 @@ void adminOptions(Admin* admin, LinkedList<Actor*>& actors, LinkedList<Movie*>& 
         cout << "8. Logout" << endl;
 
         int choice = getValidIntInput("Select an option: ", 1);
-		if (choice < 1 || choice > 8)
-		{
-			cout << "Invalid choice. Please try again." << endl;
-			continue;
-		}
 
         if (choice == 1)
         {
