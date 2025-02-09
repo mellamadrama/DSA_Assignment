@@ -322,7 +322,8 @@ void userOptions(User* user, LinkedList<Actor*>& actors, LinkedList<Movie*>& mov
         int choice = getValidIntInput("Select an option: ", 1);
 		if (choice < 1 || choice > 12)
 		{
-			cout << "Invalid choice. Please try again." << endl;
+			cout << "Invalid choice. Please try again between 1-12." << endl;
+			cout << endl;
 			continue;
 		}
 
@@ -439,6 +440,12 @@ void adminOptions(Admin* admin, LinkedList<Actor*>& actors, LinkedList<Movie*>& 
         cout << "8. Logout" << endl;
 
         int choice = getValidIntInput("Select an option: ", 1);
+		if (choice < 1 || choice > 8)
+		{
+			cout << "Invalid choice. Please try again between 1-8." << endl;
+			cout << endl;
+			continue;
+		}
 
         if (choice == 1)
         {
