@@ -49,7 +49,7 @@ int getValidIntInput(const string& prompt, int minValue = 0) {
         getline(cin, line);
         istringstream iss(line);
         if (!(iss >> input) || !(iss.eof()) || input < minValue) {
-            cout << "Invalid input. Please enter a value equal to or above: " << minValue << endl;
+            cout << "Invalid input. Please enter a value equal to or above " << minValue << endl;
         }
         else {
             return input;
