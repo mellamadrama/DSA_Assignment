@@ -228,6 +228,12 @@ int main()
     {
         displayMainMenu();
         int choice = getValidIntInput("", 1);
+		if (choice < 1 || choice > 3)
+		{
+			cout << "Invalid choice. Please try again between 1-3." << endl;
+			cout << endl;
+			continue;
+		}
 
         if (choice == 1)
         {
