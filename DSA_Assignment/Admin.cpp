@@ -17,12 +17,10 @@ int Admin::getAdminId() {
 }
 
 bool Admin::addActor(int id, LinkedList<Actor*>& actors, string& actorName, int yearOfBirth) {
-    for (int i = 0; i < actors.getLength(); ++i) {
-        Actor* actor = actors.get(i);
-    }
-
     Actor* newActor = new Actor(id, actorName, yearOfBirth, 0.0f);
     actors.add(newActor);
+    actorTable.insert(id, newActor);
+
     cout << "Actor " << actorName << " added successfully." << endl;
     return true;
 }
@@ -68,6 +66,7 @@ bool Admin::addMovie(int id, LinkedList<Movie*>& movies, string& title, string& 
 
     Movie* newMovie = new Movie(id, title, plot, yearOfRelease, 0.0f); // Default rating is 0.0
     movies.add(newMovie);
+	movieTable.insert(id, newMovie);
     cout << "Movie " << title << " added successfully." << endl;
     return true;
 }
@@ -77,8 +76,14 @@ void Admin::addActorToMovie(Movie* movie, Actor* actor) {
         cout << "Invalid actor or movie provided." << endl;
         return;
     }
+	if (movie->getActors().contains(actor) || actor->getMovies().contains(movie)) {
+		cout << "Actor " << actor->getName() << " already exists in movie " << movie->getTitle() << "." << endl;
+		return;
+	}
+    
 
     movie->addActor(actor);
+	actor->addMovie(movie);
     cout << "Actor " << actor->getName() << " added to movie " << movie->getTitle() << "." << endl;
 }
 

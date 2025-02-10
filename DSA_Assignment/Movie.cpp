@@ -63,19 +63,19 @@ float Movie::getMovieRating() {
 }
 
 void Movie::addActor(Actor* actor) {
-	if (!listOfActors.contains(actor)) {
-        if (listOfActors.isEmpty() || listOfActors.get(0)->getName() > actor->getName()) {
-            listOfActors.add(actor);
-        }
-        else {
-            for (int i = 0; i < listOfActors.getLength(); ++i) {
-                if (listOfActors.get(i)->getName() > actor->getName()) {
-                    listOfActors.add(i, actor);
-                    break;
-                }
+    if (listOfActors.isEmpty() || listOfActors.get(0)->getName() > actor->getName()) {
+        listOfActors.add(0, actor);
+    }
+    else {
+        for (int i = 0; i < listOfActors.getLength(); ++i) {
+            if (listOfActors.get(i)->getName() > actor->getName()) {
+                listOfActors.add(i, actor);
+                return;
             }
         }
-	}
+        // If the actor's name is greater than all existing actors' names, add to the end
+        listOfActors.add(listOfActors.getLength(), actor);
+    }
 }
 
 void Movie::displayActors() {

@@ -43,6 +43,9 @@ public:
     // Search a value by key
     ValueType& search(KeyType key);
 
+    // Search a value by id
+    ValueType* searchById(int id);
+
     // Remove a key-value pair from the hash table
     void remove(KeyType key);
 };
@@ -69,7 +72,6 @@ HashTable<ValueType>::~HashTable() {
             delete temp;
         }
     }
-    delete[] table;
 }
 
 // Insert a key-value pair
@@ -112,6 +114,7 @@ ValueType& HashTable<ValueType>::search(KeyType key) {
 		}
 		current = current->next;
     }
+    throw std::runtime_error("Key not found in the hash table.");
 }
 
 // Remove a key-value pair

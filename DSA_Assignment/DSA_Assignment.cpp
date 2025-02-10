@@ -17,7 +17,7 @@
 
 using namespace std;
 
-HashTable<Actor*> actorTable(29989);
+HashTable<Actor*>actorTable(29989);
 HashTable<Movie*> movieTable(29989);
 template<>
 HashTable<Actor*>* hashTable<Actor*> = new HashTable<Actor*>(20000);
@@ -353,15 +353,15 @@ void userOptions(User* user, LinkedList<Actor*>& actors, LinkedList<Movie*>& mov
             cout << endl;
             int idChoice = getValidIntInput("Enter an actor by actor id: ");
             cout << endl;
-            user->displayMovieWithActor(actors.getById(idChoice));
+            user->displayMovieWithActor(actorTable.search(idChoice));
             cout << endl;
         }
         else if (choice == 4)
-        {
+        {   
             cout << endl;
             int idChoice = getValidIntInput("Enter a movie by movie id: ");
             cout << endl;
-            user->displayAllActorsInMovie(movies.getById(idChoice));
+            user->displayAllActorsInMovie(movieTable.search(idChoice));
             cout << endl;
         }
         else if (choice == 5)
@@ -369,7 +369,7 @@ void userOptions(User* user, LinkedList<Actor*>& actors, LinkedList<Movie*>& mov
             cout << endl;
             int idChoice = getValidIntInput("Enter an actor by actor id: ");
             cout << endl;
-            user->displayActorConnections(actors.getById(idChoice));
+            user->displayActorConnections(actorTable.search(idChoice));
             cout << endl;
         }
         else if (choice == 6)
@@ -377,9 +377,10 @@ void userOptions(User* user, LinkedList<Actor*>& actors, LinkedList<Movie*>& mov
             cout << endl;
             int idChoice = getValidIntInput("Enter an actor id to rate: ");
             float rating = getValidFloatInput("Enter rating for the actor: ");
-            user->addActorRating(actors.getById(idChoice), rating);
+            user->addActorRating(actorTable.search(idChoice), rating);
             cout << endl;
-            user->displayActorRating(actors.getById(idChoice));
+            user->displayActorRating(actorTable.search(idChoice));
+            cin.ignore();
             cout << endl;
         }
         else if (choice == 7)
@@ -387,9 +388,10 @@ void userOptions(User* user, LinkedList<Actor*>& actors, LinkedList<Movie*>& mov
             cout << endl;
             int idChoice = getValidIntInput("Enter a movie id to rate: ");
             float rating = getValidFloatInput("Enter rating for the movie: ");
-            user->addMovieRating(movies.getById(idChoice), rating);
+            user->addMovieRating(movieTable.search(idChoice), rating);
             cout << endl;
-            user->displayMovieRating(movies.getById(idChoice));
+            user->displayMovieRating(movieTable.search(idChoice));
+			cin.ignore();
             cout << endl;
         }
         else if (choice == 8)
@@ -398,6 +400,7 @@ void userOptions(User* user, LinkedList<Actor*>& actors, LinkedList<Movie*>& mov
             user->displayMovieRecommendation(movies);
             cout << endl;
         }
+        
         else if (choice == 9)
         {
             cout << endl;
@@ -410,7 +413,7 @@ void userOptions(User* user, LinkedList<Actor*>& actors, LinkedList<Movie*>& mov
             int idChoice = getValidIntInput("Enter an actor id: ");
             string reportDescription = getValidStringInput("Enter report description: ");
             Report* report = new Report(user->getName(), reportDescription);
-            user->addActorReport(actors.getById(idChoice), report);
+            user->addActorReport(actorTable.search(idChoice), report);
             cout << endl;
         }
         else if (choice == 11)
@@ -419,7 +422,7 @@ void userOptions(User* user, LinkedList<Actor*>& actors, LinkedList<Movie*>& mov
             int idChoice = getValidIntInput("Enter a movie id: ");
             string reportDescription = getValidStringInput("Enter report description: ");
             Report* report = new Report(user->getName(), reportDescription);
-            user->addMovieReport(movies.getById(idChoice), report);
+            user->addMovieReport(movieTable.search(idChoice), report);
             cout << endl;
         }
         else if (choice == 12)
@@ -479,7 +482,7 @@ void adminOptions(Admin* admin, LinkedList<Actor*>& actors, LinkedList<Movie*>& 
             cout << endl;
             int movieId = getValidIntInput("Enter a movie id: ");
             int actorId = getValidIntInput("Enter an actor id: ");
-            admin->addActorToMovie(movies.getById(movieId), actors.getById(actorId));
+            admin->addActorToMovie(movieTable.search(movieId), actorTable.search(actorId));
             cout << endl;
         }
         else if (choice == 4)
@@ -488,7 +491,7 @@ void adminOptions(Admin* admin, LinkedList<Actor*>& actors, LinkedList<Movie*>& 
             int idChoice = getValidIntInput("Enter an actor id: ");
             string newName = getValidStringInput("Enter new name: ");
             int newYearOfBirth = getValidIntInput("Enter new year of birth: ");
-            admin->updateActor(actors.getById(idChoice), newName, newYearOfBirth);
+            admin->updateActor(actorTable.search(idChoice), newName, newYearOfBirth);
             cout << endl;
         }
         else if (choice == 5)
@@ -498,21 +501,22 @@ void adminOptions(Admin* admin, LinkedList<Actor*>& actors, LinkedList<Movie*>& 
             string newTitle = getValidStringInput("Enter new title: ");
             string newPlot = getValidStringInput("Enter new plot: ");
             int newYearOfRelease = getValidIntInput("Enter new year of release: ");
-            admin->updateMovie(movies.getById(idChoice), newTitle, newPlot, newYearOfRelease);
+            admin->updateMovie(movieTable.search(idChoice), newTitle, newPlot, newYearOfRelease);
             cout << endl;
         }
         else if (choice == 6)
         {
             cout << endl;
             int idChoice = getValidIntInput("Enter an actor id: ");
-            admin->displayActorReports(actors.getById(idChoice));
+            auto actor = actorTable.search(idChoice);
+            admin->displayActorReports(actor);
             cout << endl;
         }
         else if (choice == 7)
         {
             cout << endl;
             int idChoice = getValidIntInput("Enter a movie id: ");
-            admin->displayMovieReports(movies.getById(idChoice));
+            admin->displayMovieReports(movieTable.search(idChoice));
             cout << endl;
         }
         else if (choice == 8)

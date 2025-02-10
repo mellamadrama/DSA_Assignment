@@ -62,7 +62,6 @@ public:
 	// post: item is removed the specified position in the list
 	//       items after the position are shifted forward by 1 position
 	//       size of list is decreased by 1
-	void remove(int index);
 
 	// get an item at a specified position of the list (retrieve)
 	// pre : 0 <= index < size
@@ -103,9 +102,6 @@ LinkedList<T>::LinkedList() {
 
 template <typename T>
 LinkedList<T>::~LinkedList() {
-	while (!isEmpty()) {
-		remove(0);
-	}
 }
 
 // Merge two sorted linked lists
@@ -230,31 +226,6 @@ bool LinkedList<T>::contains(T& item)  {
 }
 
 template <typename T>
-void LinkedList<T>::remove(int index) {
-	if (index < 0 || index >= size) {
-		return;
-	}
-
-	Node* toDelete = NULL;
-
-	if (index == 0) {
-		toDelete = firstNode;
-		firstNode = firstNode->next;
-	}
-	else {
-		Node* current = firstNode;
-		for (int i = 0; i < index - 1; i++) {
-			current = current->next;
-		}
-		toDelete = current->next;
-		current->next = toDelete->next;
-	}
-
-	delete toDelete;
-	size--;
-}
-
-template <typename T>
 T LinkedList<T>::get(int index) {
 	if (index < 0 || index >= size) {
 		return T();
@@ -275,7 +246,7 @@ T LinkedList<T>::getById(int id) {
 		}
 		current = current->next;
 	}
-	return T(); // Return a default-constructed object if not found
+	return T();
 }
 
 template <typename T>

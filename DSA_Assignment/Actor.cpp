@@ -61,16 +61,14 @@ void Actor::addReport(Report* report) {
 }
 
 void Actor::addMovie(Movie* movie) {
-	if (!listOfMovies.contains(movie)) {
-		if (listOfMovies.isEmpty() || listOfMovies.get(0)->getTitle() > movie->getTitle()) {
-			listOfMovies.add(0, movie);
-		}
-		else {
-			for (int i = 0; i < listOfMovies.getLength(); ++i) {
-				if (listOfMovies.get(i)->getTitle() > movie->getTitle()) {
-					listOfMovies.add(i, movie);
-					return;
-				}
+	if (listOfMovies.isEmpty() || listOfMovies.get(0)->getTitle() > movie->getTitle()) {
+		listOfMovies.add(0, movie);
+	}
+	else {
+		for (int i = 0; i < listOfMovies.getLength(); ++i) {
+			if (listOfMovies.get(i)->getTitle() > movie->getTitle()) {
+				listOfMovies.add(i, movie);
+				return;
 			}
 		}
 	}
