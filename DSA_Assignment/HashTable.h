@@ -5,6 +5,7 @@
 
 #pragma once
 #include <iostream>
+#include <stdexcept>
 using namespace std;
 
 typedef int KeyType;
@@ -42,9 +43,6 @@ public:
 
     // Search a value by key
     ValueType& search(KeyType key);
-
-    // Search a value by id
-    ValueType* searchById(int id);
 
     // Remove a key-value pair from the hash table
     void remove(KeyType key);
@@ -109,12 +107,12 @@ ValueType& HashTable<ValueType>::search(KeyType key) {
     Node* current = table[index];
 
     while (current != nullptr) {
-		if (current->key == key) {
-			return current->value;
-		}
-		current = current->next;
+        if (current->key == key) {
+            return current->value;
+        }
+        current = current->next;
     }
-    throw std::runtime_error("Key not found in the hash table.");
+    throw std::runtime_error("Error: Key not found in the hashtable");
 }
 
 // Remove a key-value pair
